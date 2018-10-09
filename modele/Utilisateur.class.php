@@ -21,24 +21,24 @@ class Utilisateur
     private $dateCreation;	// date de création du compte
     private $nbTraces;	// nombre de traces stockées actuellement
     private $dateDerniereTrace;	// date de début de la dernière trace
-        
+    
     // ------------------------------------------------------------------------------------------------------
     // ----------------------------------------- Constructeur -----------------------------------------------
     // ------------------------------------------------------------------------------------------------------
     
     public function Utilisateur($unId, $unPseudo, $unMdpSha1, $uneAdrMail, $unNumTel, $unNiveau,
         $uneDateCreation, $unNbTraces, $uneDateDerniereTrace) {
-            $this->id = $unId;	
-            $this->pseudo = $unPseudo;	
-            $this->mdpSha1 = $unMdpSha1;	
-            $this->adrMail = $uneAdrMail;	
-            $this->numTel = $unNumTel;	
-            $this->niveau = $unNiveau;	
-            $this->dateCreation = $uneDateCreation;	
-            $this->nbTraces = $unNbTraces;	
+            $this->id = $unId;
+            $this->pseudo = $unPseudo;
+            $this->mdpSha1 = $unMdpSha1;
+            $this->adrMail = $uneAdrMail;
+            $this->numTel = Utilisateur::numTel($unNumTel);
+            $this->niveau = $unNiveau;
+            $this->dateCreation = $uneDateCreation;
+            $this->nbTraces = $unNbTraces;
             $this->dateDerniereTrace = $uneDateDerniereTrace;
     }
-        
+    
     // ------------------------------------------------------------------------------------------------------
     // ---------------------------------------- Getters et Setters ------------------------------------------
     // ------------------------------------------------------------------------------------------------------
@@ -56,7 +56,7 @@ class Utilisateur
     public function setAdrMail($uneAdrMail) {$this->adrMail = $uneAdrMail;}
     
     public function getNumTel() {return $this->numTel;}
-    public function setNumTel($unNumTel) {$this->numTel = $unNumTel;}
+    public function setNumTel($unNumTel) {$this->numTel = Utilisateur::numTel($unNumTel);}
     
     public function getNiveau() {return $this->niveau;}
     public function setNiveau($unNiveau) {$this->niveau = $unNiveau;}
@@ -69,10 +69,10 @@ class Utilisateur
     
     public function getDateDerniereTrace() {return $this->dateDerniereTrace;}
     public function setDateDerniereTrace($uneDateDerniereTrace) {$this->dateDerniereTrace = $uneDateDerniereTrace;}
-                
-	// ------------------------------------------------------------------------------------------------------
-	// -------------------------------------- Méthodes d'instances ------------------------------------------
-	// ------------------------------------------------------------------------------------------------------
+    
+    // ------------------------------------------------------------------------------------------------------
+    // -------------------------------------- Méthodes d'instances ------------------------------------------
+    // ------------------------------------------------------------------------------------------------------
     
     public function toString() {
         $msg = 'id : ' . $this->id . '<br>';
@@ -85,6 +85,40 @@ class Utilisateur
         $msg .= 'nbTraces : ' . $this->nbTraces . '<br>';
         $msg .= 'dateDerniereTrace : ' . $this->dateDerniereTrace . '<br>';
         return $msg;
+    }
+    
+    public function numTel($unNumTel) {
+        $test = str_replace("-","",$unNumTel);
+        $test = str_replace("/","",$unNumTel);
+        $test = str_replace("\\","",$unNumTel);
+        $test = str_replace(";","",$unNumTel);
+        $test = str_replace(":","",$unNumTel);
+        $test = str_replace("_","",$unNumTel);
+        $test = str_replace("*","",$unNumTel);
+        $test = str_replace(".","",$unNumTel);
+        
+        $lg = strlen($test);
+        
+        if ($lg == 10) {
+            $temp = substr($test, 0, 2);
+            $num = $temp . ".";
+            
+            $temp = substr($test, 2, 2);
+            $num .= $temp . ".";
+            
+            $temp = substr($test, 4, 2);
+            $num .= $temp . ".";
+            
+            $temp = substr($test, 6, 2);
+            $num .= $temp . ".";
+            
+            $temp = substr($test, 8, 2);
+            $num .= $temp;
+            
+            return $num;
+        }
+        else
+            return $unNumTel;
     }
     
 } // fin de la classe Utilisateur
