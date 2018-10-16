@@ -298,8 +298,19 @@ else {
 
 
 // --------------------------------------------------------------------------------------
-// début de la zone attribuée au développeur 2 (xxxxxxxxxxxxxxxxxxxx) : lignes 300 à 399
+// début de la zone attribuée au développeur 2 (vincent) : lignes 300 à 399
 // --------------------------------------------------------------------------------------
+// test de la m�thode getLesUtilisateursAutorisant ------------------------------------------------
+// modifi� par Jim le 13/8/2018
+echo "<h3>Test de getLesUtilisateursAutorisant(idUtilisateur) : </h3>";
+$lesUtilisateurs = $dao->getLesUtilisateursAutorisant(4);
+$nbReponses = sizeof($lesUtilisateurs);
+echo "<p>Nombre d'utilisateurs autorisant l'utilisateur 4 � voir leurs parcours : " . $nbReponses . "</p>";
+// affichage des utilisateurs
+foreach ($lesUtilisateurs as $unUtilisateur)
+{   echo ($unUtilisateur->toString());
+echo ('<br>');
+}
 
 
 

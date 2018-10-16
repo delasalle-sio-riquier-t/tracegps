@@ -548,10 +548,56 @@ class DAO
     
     
     // --------------------------------------------------------------------------------------
-    // début de la zone attribuée au développeur 2 (xxxxxxxxxxxxxxxxxxxx) : lignes 550 à 749
+    // début de la zone attribuée au développeur 2 (vincent) : lignes 550 à 749
     // --------------------------------------------------------------------------------------
     
-
+    // fournit la collection  de tous les utilisateurs (de niveau 1)
+    // le résultat est fourni sous forme d'une collection d'objets Utilisateur
+    // modifié par Jim le 27/12/2017
+    public function getLesUtilisateursAutorisant($idUtilisateur) {
+        // préparation de la requête de recherche
+        $txt_req  = " Select *";
+        $txt_req .= " from tracegps_autorisations, tracegps_utilisateurs";
+        $txt_req .= " where tracegps_autorisations.idAutorisant = tracegps_utilisateurs.id";
+        $txt_req .= " AND idAutorise = :idUtilisateur;";
+        $txt_req .= " order by pseudo";
+        
+        $req =$this->cnx->prepare($txt_req);
+        $req->bindValue("idUtilisateur", $idUtilisateur, PDO::PARAM_INT);
+        
+        // extraction des données
+        $req->execute();
+        $uneLigne = $req->fetch(PDO::FETCH_OBJ);
+        
+        // construction d'une collection d'objets Utilisateur
+        $lesUtilisateurs = array();
+        
+        // tant qu'une ligne est trouvée :
+        while ($uneLigne) {
+            // création d'un objet Utilisateur
+            $unId = utf8_encode($uneLigne->id);
+            $unPseudo = utf8_encode($uneLigne->pseudo);
+            $unMdpSha1 = utf8_encode($uneLigne->mdpSha1);
+            $uneAdrMail = utf8_encode($uneLigne->adrMail);
+            $unNumTel = utf8_encode($uneLigne->numTel);
+            $unNiveau = utf8_encode($uneLigne->niveau);
+            $uneDateCreation = utf8_encode($uneLigne->dateCreation);
+            $unNbTraces = utf8_encode($uneLigne->nbTraces);
+            $uneDateDerniereTrace = utf8_encode($uneLigne->dateDerniereTrace);
+            
+            
+            $unUtilisateur = new Utilisateur($unId, $unPseudo, $unMdpSha1, $uneAdrMail, $unNumTel, $unNiveau, $uneDateCreation, $unNbTraces, $uneDateDerniereTrace);
+            // ajout de l'utilisateur à la collection
+            $lesUtilisateurs[] = $unUtilisateur;
+            
+            // extrait la ligne suivante
+            $uneLigne = $req->fetch(PDO::FETCH_OBJ);
+        }
+        // libère les ressources du jeu de données
+        $req->closeCursor();
+        // fourniture de la collection
+        return $lesUtilisateurs;
+    }
     
     
     
