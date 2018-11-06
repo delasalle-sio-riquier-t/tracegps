@@ -405,6 +405,13 @@ class DAO
         
     }
  
+   
+    
+    // --------------------------------------------------------------------------------------
+    // début de la zone attribuée au développeur 2 (Vincent) : lignes 550 à 749
+    // --------------------------------------------------------------------------------------
+    
+
     public function getLesUtilisateursAutorisant($idUtilisateur)
     {
         $txt_req = "select * from tracegps_autorisations, tracegps_vue_utilisateurs where id = idAutorisant and idAutorise = :id";
@@ -442,10 +449,10 @@ class DAO
         // fourniture de la collection
         return $lesUtilisateurs;
     }
-
+    
     public function getLesUtilisateursAutorises($idUtilisateur)
     {
-        $txt_req = "select * from tracegps_autorisations, tracegps_vue_utilisateurs where id = idAutorisant and idAutorise = :id";
+        $txt_req = "select * from tracegps_autorisations, tracegps_vue_utilisateurs  where tracegps_autorisations.idAutorise = tracegps_vue_utilisateurs.id  and idAutorisant = 2";
         
         $req = $this->cnx->prepare($txt_req);
         $req->bindValue("id", $idUtilisateur, PDO::PARAM_INT);
@@ -480,13 +487,6 @@ class DAO
         // fourniture de la collection
         return $lesUtilisateurs;
     }
-        
-    
-    // --------------------------------------------------------------------------------------
-    // début de la zone attribuée au développeur 2 (xxxxxxxxxxxxxxxxxxxx) : lignes 550 à 749
-    // --------------------------------------------------------------------------------------
-    
-
     
     
     
