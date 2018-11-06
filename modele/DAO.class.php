@@ -411,15 +411,15 @@ class DAO
         
         
         $req = $this->cnx->prepare($txt_req);
-        // extraction des donn�es
+        // extraction des donn�es
         $req->execute();
         $uneLigne = $req->fetch(PDO::FETCH_OBJ);
         
         // construction d'une collection d'objets Utilisateur
         $lesTraces = array();
-        // tant qu'une ligne est trouv�e :
+        // tant qu'une ligne est trouv�e :
         while ($uneLigne) {
-            // cr�ation d'un objet Utilisateur
+            // cr�ation d'un objet Utilisateur
             $unId = utf8_encode($uneLigne->id);
             $uneDateHeureDebut = utf8_encode($uneLigne->dateDebut);
             $uneDateHeureFin = utf8_encode($uneLigne->dateFin);
@@ -429,12 +429,12 @@ class DAO
             $uneTrace = new Trace($unId, $uneDateHeureDebut, $uneDateHeureFin,$terminee, $unIdUtilisateur);
             $uneTrace->setLesPointsDeTrace($this->getLesPointsDeTrace($unId));
             
-            // ajout de l'utilisateur � la collection
+            // ajout de l'utilisateur � la collection
             $lesTraces[] = $uneTrace;
             // extrait la ligne suivante
             $uneLigne = $req->fetch(PDO::FETCH_OBJ);
         }
-        // lib�re les ressources du jeu de donn�es
+        // lib�re les ressources du jeu de donn�es
         $req->closeCursor();
         // fourniture de la collection
         return $lesTraces;
@@ -536,7 +536,6 @@ class DAO
     
 
     
-<<<<<<< HEAD
     
     
     
@@ -733,12 +732,7 @@ class DAO
     
     // --------------------------------------------------------------------------------------
     // début de la zone attribuée au développeur 3 (riquier) : lignes 750 à 949
-=======
-    // --------------------------------------------------------------------------------------
-    // d�début de la zone attribuée au développeur  3 (xxxxxxxxxxxxxxxxxxxx) : lignes 750 � 949
->>>>>>> branch 'master' of https://github.com/delasalle-sio-riquier-t/tracegps.git
-    // --------------------------------------------------------------------------------------
-    
+
     
     public function getLesPointsDeTrace($idTrace) {
         // préparation de la requête de recherche
@@ -781,7 +775,40 @@ class DAO
         return $lesPointsDeTrace;
     }
     
-    
+    public function creerUnPointDeTrace($unpointDeTrace) {
+        
+        
+
+        // préparation de la requête
+        $txt_req1 = "insert into tracegps_points (idTrace, id, latitude, longitude, altitude, dateHeure, rythmeCardio)";
+        $txt_req1 .= " values (:idTrace, :id, :latitude, :longitude, :altitude, :dateHeure, :rythmeCardio)";
+        $req1 = $this->cnx->prepare($txt_req1);
+
+        // liaison de la requête et de ses paramètres
+        $req1->bindValue("idTrace", $unpointDeTrace->getIdTrace(), PDO::PARAM_INT);
+        $req1->bindValue("id", $unpointDeTrace->getId(), PDO::PARAM_INT);
+        $req1->bindValue("latitude", $unpointDeTrace->getLatitude(), PDO::PARAM_STR);
+        $req1->bindValue("longitude", $unpointDeTrace->getLongitude(), PDO::PARAM_STR);
+        $req1->bindValue("altitude", $unpointDeTrace->getAltitude(), PDO::PARAM_STR);
+        $req1->bindValue("dateHeure", $unpointDeTrace->getDateHeure(), PDO::PARAM_STR);
+        $req1->bindValue("rythmeCardio", $unpointDeTrace->getRythmeCardio(), PDO::PARAM_INT);
+
+        // exécution de la requête
+        $ok = $req1->execute();
+
+        // sortir en cas d'échec
+        if ( ! $ok) { return false; }
+        
+        if ($unpointDeTrace->getIdTrace() == 1)
+        {
+        $txt_req2 = "update tracegps_utilisateurs set dateHeureDebut = ". $unpointDeTrace->getDateHeure().";";
+        $req2 = $this->cnx->prepare($txt_req2);
+        // extraction des données
+        $req2->execute();
+        }
+        return true;
+    }
+
    
     
     
