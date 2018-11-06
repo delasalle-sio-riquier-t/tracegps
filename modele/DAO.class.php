@@ -533,52 +533,209 @@ class DAO
         else return false;
     }
        
+
   
     // --------------------------------------------------------------------------------------
     // début de la zone attribuée au développeur 3 (riquier) : lignes 750 à 949
     // --------------------------------------------------------------------------------------
     
     
-    public function getLesPointsDeTrace($idTrace) {
-        // préparation de la requête de recherche
-        $txt_req = "Select id, latitude, longitude, altitude, dateHeure, rythmeCardio";
-        $txt_req .= " from tracegps_Points";
-        $txt_req .= " where idTrace = $idTrace";
-        $txt_req .= " order by id";
+    
+    
+
+   
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
         
-        $req = $this->cnx->prepare($txt_req);
-        // extraction des données
-        $req->execute();
-        $uneLigne = $req->fetch(PDO::FETCH_OBJ);
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
         
-        // construction d'une collection d'objets Utilisateur
-        $lesPointsDeTrace = array();
-        // tant qu'une ligne est trouvée :
-        while ($uneLigne) {
-            // création d'un objet Utilisateur
-            
-            $unId = utf8_encode($uneLigne->id);
-            $uneLatitude = utf8_encode($uneLigne->latitude);
-            $uneLongitude = utf8_encode($uneLigne->longitude);
-            $uneAltitude = utf8_encode($uneLigne->altitude);
-            $uneDateHeure = utf8_encode($uneLigne->dateHeure);
-            $unRythmeCardio = utf8_encode($uneLigne->rythmeCardio);
-            
-            $unTempsCumule = 0 ;	// temps cumulé depuis le départ (en secondes)
-            $uneDistanceCumulee = 0;	// distance cumulée depuis le départ (en Km)
-            $uneVitesse = 0;
-            
-            $unPointDeTrace = new PointDeTrace($idTrace, $unId, $uneLatitude, $uneLongitude, $uneAltitude, $uneDateHeure, $unRythmeCardio, $unTempsCumule, $uneDistanceCumulee, $uneVitesse);
-            // ajout de l'utilisateur à la collection
-            $lesPointsDeTrace[] = $unPointDeTrace;
-            // extrait la ligne suivante
-            $uneLigne = $req->fetch(PDO::FETCH_OBJ);
-        }
-        // libère les ressources du jeu de données
-        $req->closeCursor();
-        // fourniture de la collection
-        return $lesPointsDeTrace;
-    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
    
