@@ -606,7 +606,7 @@ class DAO
     
     
     // --------------------------------------------------------------------------------------
-    // début de la zone attribuée au développeur 3 (xxxxxxxxxxxxxxxxxxxx) : lignes 750 à 949
+    // début de la zone attribuée au développeur 3 (riquier) : lignes 750 à 949
     // --------------------------------------------------------------------------------------
     
     
@@ -652,10 +652,7 @@ class DAO
     }
     
     
-    
-    
-    
-    
+   
     
     
     
