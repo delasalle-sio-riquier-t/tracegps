@@ -241,34 +241,10 @@ echo "<p>Nombre de points de la trace 1 : " . $nbPoints . "</p>";
 // affichage des points
 foreach ($lesPoints as $unPoint)
 {   echo ($unPoint->toString());
-echo ('<br>');
+    echo ('<br>');
 }
 
-// test de la méthode creerUnPointDeTrace ---------------------------------------------------------
-// modifié par Jim le 13/8/2018
-echo "<h3>Test de creerUnPointDeTrace : </h3>";
-// on affiche d'abord le nombre de points (5) de la trace 1
-$lesPoints = $dao->getLesPointsDeTrace(1);
-$nbPoints = sizeof($lesPoints);
-echo "<p>Nombre de points de la trace 1 : " . $nbPoints . "</p>";
-// on crée un sixième point et on l'ajoute à la trace 1
-$unIdTrace = 1;
-$unID = 6;
-$uneLatitude = 48.20;
-$uneLongitude = -1.55;
-$uneAltitude = 50;
-$uneDateHeure = date('Y-m-d H:i:s', time());
-$unRythmeCardio = 80;
-$unTempsCumule = 0;
-$uneDistanceCumulee = 0;
-$uneVitesse = 15;
-$unPoint = new PointDeTrace($unIdTrace, $unID, $uneLatitude, $uneLongitude, $uneAltitude, $uneDateHeure, $unRythmeCardio, $unTempsCumule, $uneDistanceCumulee, $uneVitesse);
-$ok = $dao->creerUnPointDeTrace($unPoint);
-// on affiche à nouveau le nombre de points (6) de la trace 1
-$lesPoints = $dao->getLesPointsDeTrace(1);
-$nbPoints = sizeof($lesPoints);
-echo "<p>Nombre de points de la trace 1 : " . $nbPoints . "</p>";
-echo ('<br>');
+
 
 
 // // test de la m�thode getLesUtilisateursAutorisant ------------------------------------------------
@@ -533,16 +509,65 @@ echo "<p>La suppression de l'autorisation de l'utilisateur 2 vers l'utilisateur 
 
 
 // --------------------------------------------------------------------------------------
-// début de la zone attribuée au développeur 3 (xxxxxxxxxxxxxxxxxxxx) : lignes 400 à 499
+// début de la zone attribuée au développeur 3 (Riquier) : lignes 400 à 499
 // --------------------------------------------------------------------------------------
 
 
+// test de la méthode creerUnPointDeTrace ---------------------------------------------------------
+// modifié par Jim le 13/8/2018
+// echo "<h3>Test de creerUnPointDeTrace : </h3>";
+// // on affiche d'abord le nombre de points (5) de la trace 1
+// $lesPoints = $dao->getLesPointsDeTrace(1);
+// $nbPoints = sizeof($lesPoints);
+// echo "<p>Nombre de points de la trace 1 : " . $nbPoints . "</p>";
+// // on crée un sixième point et on l'ajoute à la trace 1
+// $unIdTrace = 1;
+// $unID = 6;
+// $uneLatitude = 48.20;
+// $uneLongitude = -1.55;
+// $uneAltitude = 50;
+// $uneDateHeure = date('Y-m-d H:i:s', time());
+// $unRythmeCardio = 80;
+// $unTempsCumule = 0;
+// $uneDistanceCumulee = 0;
+// $uneVitesse = 15;
+// $unPoint = new PointDeTrace($unIdTrace, $unID, $uneLatitude, $uneLongitude, $uneAltitude, $uneDateHeure, $unRythmeCardio, $unTempsCumule, $uneDistanceCumulee, $uneVitesse);
+// $ok = $dao->creerUnPointDeTrace($unPoint);
+// // on affiche à nouveau le nombre de points (6) de la trace 1
+// $lesPoints = $dao->getLesPointsDeTrace(1);
+// $nbPoints = sizeof($lesPoints);
+// echo "<p>Nombre de points de la trace 1 : " . $nbPoints . "</p>";
+// echo ('<br>');
 
 
-
-
-
-
+// test de la méthode creerUnPointDeTrace ---------------------------------------------------------
+// modifié par Jim le 13/8/2018
+echo "<h3>Test de creerUnPointDeTrace : </h3>";
+$trace2 = new Trace(0, "2017-12-18 14:00:00", null, false, 3);
+$ok = $dao->creerUneTrace($trace2);
+if ($ok) {
+    echo "<p>Trace bien enregistrée !</p>";
+    echo $trace2->toString();
+    
+    // on crée un premier point et on l'ajoute à la trace
+    $unIdTrace = $trace2->getId();
+    $unID = 1;
+    $uneLatitude = 48.20;
+    $uneLongitude = -1.55;
+    $uneAltitude = 50;
+    $uneDateHeure = date('Y-m-d H:i:s', time());
+    $unRythmeCardio = 80;
+    $unTempsCumule = 0;
+    $uneDistanceCumulee = 0;
+    $uneVitesse = 15;
+    $unPoint = new PointDeTrace($unIdTrace, $unID, $uneLatitude, $uneLongitude, $uneAltitude, $uneDateHeure, $unRythmeCardio, $unTempsCumule, $uneDistanceCumulee, $uneVitesse);
+    $ok = $dao->creerUnPointDeTrace($unPoint);
+    
+    echo $trace2->toString();
+}
+else {
+    echo "<p>Echec lors de l'enregistrement de la trace !</p>";
+}
 
 
 
