@@ -1,32 +1,32 @@
 <?php
 // Projet TraceGPS
 // fichier : modele/DAO.class.php   (DAO : Data Access Object)
-// Rôle : fournit des méthodes d'accès à la bdd tracegps (projet TraceGPS) au moyen de l'objet PDO
-// modifié par Jim le 12/8/2018
+// R�le : fournit des m�thodes d'acc�s � la bdd tracegps (projet TraceGPS) au moyen de l'objet PDO
+// modifi� par Jim le 12/8/2018
 
-// liste des méthodes déjà développées (dans l'ordre d'apparition dans le fichier) :
+// liste des m�thodes d�j� d�velopp�es (dans l'ordre d'apparition dans le fichier) :
 
-// __construct() : le constructeur crée la connexion $cnx à la base de données
-// __destruct() : le destructeur ferme la connexion $cnx à la base de données
-// getNiveauConnexion($login, $mdp) : fournit le niveau (0, 1 ou 2) d'un utilisateur identifié par $login et $mdp
+// __construct() : le constructeur cr�e la connexion $cnx � la base de donn�es
+// __destruct() : le destructeur ferme la connexion $cnx � la base de donn�es
+// getNiveauConnexion($login, $mdp) : fournit le niveau (0, 1 ou 2) d'un utilisateur identifi� par $login et $mdp
 // function existePseudoUtilisateur($pseudo) : fournit true si le pseudo $pseudo existe dans la table tracegps_utilisateurs, false sinon
-// getUnUtilisateur($login) : fournit un objet Utilisateur à partir de $login (son pseudo ou son adresse mail)
+// getUnUtilisateur($login) : fournit un objet Utilisateur � partir de $login (son pseudo ou son adresse mail)
 // getTousLesUtilisateurs() : fournit la collection de tous les utilisateurs (de niveau 1)
 // creerUnUtilisateur($unUtilisateur) : enregistre l'utilisateur $unUtilisateur dans la bdd
-// modifierMdpUtilisateur($login, $nouveauMdp) : enregistre le nouveau mot de passe $nouveauMdp de l'utilisateur $login daprès l'avoir hashé en SHA1
+// modifierMdpUtilisateur($login, $nouveauMdp) : enregistre le nouveau mot de passe $nouveauMdp de l'utilisateur $login dapr�s l'avoir hash� en SHA1
 // supprimerUnUtilisateur($login) : supprime l'utilisateur $login (son pseudo ou son adresse mail) dans la bdd, ainsi que ses traces et ses autorisations
-// envoyerMdp($login, $nouveauMdp) : envoie un mail à l'utilisateur $login avec son nouveau mot de passe $nouveauMdp
+// envoyerMdp($login, $nouveauMdp) : envoie un mail � l'utilisateur $login avec son nouveau mot de passe $nouveauMdp
 
-// liste des méthodes restant à développer :
+// liste des m�thodes restant � d�velopper :
 
 // existeAdrMailUtilisateur($adrmail) : fournit true si l'adresse mail $adrMail existe dans la table tracegps_utilisateurs, false sinon
-// getLesUtilisateursAutorises($idUtilisateur) : fournit la collection  des utilisateurs (de niveau 1) autorisés à suivre l'utilisateur $idUtilisateur
-// getLesUtilisateursAutorisant($idUtilisateur) : fournit la collection  des utilisateurs (de niveau 1) autorisant l'utilisateur $idUtilisateur à voir leurs parcours
-// autoriseAConsulter($idAutorisant, $idAutorise) : vérifie que l'utilisateur $idAutorisant) autorise l'utilisateur $idAutorise à consulter ses traces
+// getLesUtilisateursAutorises($idUtilisateur) : fournit la collection  des utilisateurs (de niveau 1) autoris�s � suivre l'utilisateur $idUtilisateur
+// getLesUtilisateursAutorisant($idUtilisateur) : fournit la collection  des utilisateurs (de niveau 1) autorisant l'utilisateur $idUtilisateur � voir leurs parcours
+// autoriseAConsulter($idAutorisant, $idAutorise) : v�rifie que l'utilisateur $idAutorisant) autorise l'utilisateur $idAutorise � consulter ses traces
 // creerUneAutorisation($idAutorisant, $idAutorise) : enregistre l'autorisation ($idAutorisant, $idAutorise) dans la bdd
 // supprimerUneAutorisation($idAutorisant, $idAutorise) : supprime l'autorisation ($idAutorisant, $idAutorise) dans la bdd
 // getLesPointsDeTrace($idTrace) : fournit la collection des points de la trace $idTrace
-// getUneTrace($idTrace) : fournit un objet Trace à partir de identifiant $idTrace
+// getUneTrace($idTrace) : fournit un objet Trace � partir de identifiant $idTrace
 // getToutesLesTraces() : fournit la collection de toutes les traces
 // getMesTraces($idUtilisateur) : fournit la collection des traces de l'utilisateur $idUtilisateur
 // getLesTracesAutorisees($idUtilisateur) : fournit la collection des traces que l'utilisateur $idUtilisateur a le droit de consulter
@@ -36,24 +36,24 @@
 // creerUnPointDeTrace(PointDeTrace $unPointDeTrace) : enregistre le point $unPointDeTrace dans la bdd
 
 
-// certaines méthodes nécessitent les classes suivantes :
+// certaines m�thodes n�cessitent les classes suivantes :
 include_once ('Utilisateur.class.php');
 include_once ('Trace.class.php');
 include_once ('PointDeTrace.class.php');
 include_once ('Point.class.php');
 include_once ('Outils.class.php');
 
-// inclusion des paramètres de l'application
+// inclusion des param�tres de l'application
 include_once ('parametres.php');
 
-// début de la classe DAO (Data Access Object)
+// d�but de la classe DAO (Data Access Object)
 class DAO
 {
     // ------------------------------------------------------------------------------------------------------
-    // ---------------------------------- Membres privés de la classe ---------------------------------------
+    // ---------------------------------- Membres priv�s de la classe ---------------------------------------
     // ------------------------------------------------------------------------------------------------------
     
-    private $cnx;				// la connexion à la base de données
+    private $cnx;				// la connexion � la base de donn�es
     
     // ------------------------------------------------------------------------------------------------------
     // ---------------------------------- Constructeur et destructeur ---------------------------------------
@@ -75,59 +75,59 @@ class DAO
     }
     
     public function __destruct() {
-        // ferme la connexion à MySQL :
+        // ferme la connexion � MySQL :
         unset($this->cnx);
     }
     
     // ------------------------------------------------------------------------------------------------------
-    // -------------------------------------- Méthodes d'instances ------------------------------------------
+    // -------------------------------------- M�thodes d'instances ------------------------------------------
     // ------------------------------------------------------------------------------------------------------
     
-    // fournit le niveau (0, 1 ou 2) d'un utilisateur identifié par $pseudo et $mdpSha1
+    // fournit le niveau (0, 1 ou 2) d'un utilisateur identifi� par $pseudo et $mdpSha1
     // cette fonction renvoie un entier :
     //     0 : authentification incorrecte
-    //     1 : authentification correcte d'un utilisateur (pratiquant ou personne autorisée)
+    //     1 : authentification correcte d'un utilisateur (pratiquant ou personne autoris�e)
     //     2 : authentification correcte d'un administrateur
-    // modifié par Jim le 11/1/2018
+    // modifi� par Jim le 11/1/2018
     public function getNiveauConnexion($pseudo, $mdpSha1) {
-        // préparation de la requête de recherche
+        // pr�paration de la requ�te de recherche
         $txt_req = "Select niveau from tracegps_utilisateurs";
         $txt_req .= " where pseudo = :pseudo";
         $txt_req .= " and mdpSha1 = :mdpSha1";
         $req = $this->cnx->prepare($txt_req);
-        // liaison de la requête et de ses paramètres
+        // liaison de la requ�te et de ses param�tres
         $req->bindValue("pseudo", $pseudo, PDO::PARAM_STR);
         $req->bindValue("mdpSha1", $mdpSha1, PDO::PARAM_STR);
-        // extraction des données
+        // extraction des donn�es
         $req->execute();
         $uneLigne = $req->fetch(PDO::FETCH_OBJ);
-        // traitement de la réponse
+        // traitement de la r�ponse
         $reponse = 0;
         if ($uneLigne) {
         	$reponse = $uneLigne->niveau;
         }
-        // libère les ressources du jeu de données
+        // lib�re les ressources du jeu de donn�es
         $req->closeCursor();
-        // fourniture de la réponse
+        // fourniture de la r�ponse
         return $reponse;
     }
     
     
     // fournit true si le pseudo $pseudo existe dans la table tracegps_utilisateurs, false sinon
-    // modifié par Jim le 27/12/2017
+    // modifi� par Jim le 27/12/2017
     public function existePseudoUtilisateur($pseudo) {
-        // préparation de la requête de recherche
+        // pr�paration de la requ�te de recherche
         $txt_req = "Select count(*) from tracegps_utilisateurs where pseudo = :pseudo";
         $req = $this->cnx->prepare($txt_req);
-        // liaison de la requête et de ses paramètres
+        // liaison de la requ�te et de ses param�tres
         $req->bindValue("pseudo", $pseudo, PDO::PARAM_STR);
-        // exécution de la requête
+        // ex�cution de la requ�te
         $req->execute();
         $nbReponses = $req->fetchColumn(0);
-        // libère les ressources du jeu de données
+        // lib�re les ressources du jeu de donn�es
         $req->closeCursor();
         
-        // fourniture de la réponse
+        // fourniture de la r�ponse
         if ($nbReponses == 0) {
             return false;
         }
@@ -137,29 +137,29 @@ class DAO
     }
     
     
-    // fournit un objet Utilisateur à partir de son pseudo $pseudo
+    // fournit un objet Utilisateur � partir de son pseudo $pseudo
     // fournit la valeur null si le pseudo n'existe pas
-    // modifié par Jim le 9/1/2018
+    // modifi� par Jim le 9/1/2018
     public function getUnUtilisateur($pseudo) {
-        // préparation de la requête de recherche
+        // pr�paration de la requ�te de recherche
         $txt_req = "Select id, pseudo, mdpSha1, adrMail, numTel, niveau, dateCreation, nbTraces, dateDerniereTrace";
         $txt_req .= " from tracegps_vue_utilisateurs";
         $txt_req .= " where pseudo = :pseudo";
         $req = $this->cnx->prepare($txt_req);
-        // liaison de la requête et de ses paramètres
+        // liaison de la requ�te et de ses param�tres
         $req->bindValue("pseudo", $pseudo, PDO::PARAM_STR);
-        // extraction des données
+        // extraction des donn�es
         $req->execute();
         $uneLigne = $req->fetch(PDO::FETCH_OBJ);
-        // libère les ressources du jeu de données
+        // lib�re les ressources du jeu de donn�es
         $req->closeCursor();
         
-        // traitement de la réponse
+        // traitement de la r�ponse
         if ( ! $uneLigne) {
             return null;
         }
         else {
-            // création d'un objet Utilisateur
+            // cr�ation d'un objet Utilisateur
             $unId = utf8_encode($uneLigne->id);
             $unPseudo = utf8_encode($uneLigne->pseudo);
             $unMdpSha1 = utf8_encode($uneLigne->mdpSha1);
@@ -177,25 +177,25 @@ class DAO
     
     
     // fournit la collection  de tous les utilisateurs (de niveau 1)
-    // le résultat est fourni sous forme d'une collection d'objets Utilisateur
-    // modifié par Jim le 27/12/2017
+    // le r�sultat est fourni sous forme d'une collection d'objets Utilisateur
+    // modifi� par Jim le 27/12/2017
     public function getTousLesUtilisateurs() {
-        // préparation de la requête de recherche
+        // pr�paration de la requ�te de recherche
         $txt_req = "Select id, pseudo, mdpSha1, adrMail, numTel, niveau, dateCreation, nbTraces, dateDerniereTrace";
         $txt_req .= " from tracegps_vue_utilisateurs";
         $txt_req .= " where niveau = 1";
         $txt_req .= " order by pseudo";
         
         $req = $this->cnx->prepare($txt_req);
-        // extraction des données
+        // extraction des donn�es
         $req->execute();
         $uneLigne = $req->fetch(PDO::FETCH_OBJ);
         
         // construction d'une collection d'objets Utilisateur
         $lesUtilisateurs = array();
-        // tant qu'une ligne est trouvée :
+        // tant qu'une ligne est trouv�e :
         while ($uneLigne) {
-            // création d'un objet Utilisateur
+            // cr�ation d'un objet Utilisateur
             $unId = utf8_encode($uneLigne->id);
             $unPseudo = utf8_encode($uneLigne->pseudo);
             $unMdpSha1 = utf8_encode($uneLigne->mdpSha1);
@@ -207,12 +207,12 @@ class DAO
             $uneDateDerniereTrace = utf8_encode($uneLigne->dateDerniereTrace);
             
             $unUtilisateur = new Utilisateur($unId, $unPseudo, $unMdpSha1, $uneAdrMail, $unNumTel, $unNiveau, $uneDateCreation, $unNbTraces, $uneDateDerniereTrace);
-            // ajout de l'utilisateur à la collection
+            // ajout de l'utilisateur � la collection
             $lesUtilisateurs[] = $unUtilisateur;
             // extrait la ligne suivante
             $uneLigne = $req->fetch(PDO::FETCH_OBJ);
         }
-        // libère les ressources du jeu de données
+        // lib�re les ressources du jeu de donn�es
         $req->closeCursor();
         // fourniture de la collection
         return $lesUtilisateurs;
@@ -220,33 +220,33 @@ class DAO
 
     
     // enregistre l'utilisateur $unUtilisateur dans la bdd
-    // fournit true si l'enregistrement s'est bien effectué, false sinon
-    // met à jour l'objet $unUtilisateur avec l'id (auto_increment) attribué par le SGBD
-    // modifié par Jim le 9/1/2018
+    // fournit true si l'enregistrement s'est bien effectu�, false sinon
+    // met � jour l'objet $unUtilisateur avec l'id (auto_increment) attribu� par le SGBD
+    // modifi� par Jim le 9/1/2018
     public function creerUnUtilisateur($unUtilisateur) {
-        // on teste si l'utilisateur existe déjà
+        // on teste si l'utilisateur existe d�j�
         if ($this->existePseudoUtilisateur($unUtilisateur->getPseudo())) return false;
         
-        // préparation de la requête
+        // pr�paration de la requ�te
         $txt_req1 = "insert into tracegps_utilisateurs (pseudo, mdpSha1, adrMail, numTel, niveau, dateCreation)";
         $txt_req1 .= " values (:pseudo, :mdpSha1, :adrMail, :numTel, :niveau, :dateCreation)";
         $req1 = $this->cnx->prepare($txt_req1);
-        // liaison de la requête et de ses paramètres
+        // liaison de la requ�te et de ses param�tres
         $req1->bindValue("pseudo", utf8_decode($unUtilisateur->getPseudo()), PDO::PARAM_STR);
         $req1->bindValue("mdpSha1", utf8_decode(sha1($unUtilisateur->getMdpsha1())), PDO::PARAM_STR);
         $req1->bindValue("adrMail", utf8_decode($unUtilisateur->getAdrmail()), PDO::PARAM_STR);
         $req1->bindValue("numTel", utf8_decode($unUtilisateur->getNumTel()), PDO::PARAM_STR);
         $req1->bindValue("niveau", utf8_decode($unUtilisateur->getNiveau()), PDO::PARAM_INT);
         $req1->bindValue("dateCreation", utf8_decode($unUtilisateur->getDateCreation()), PDO::PARAM_STR);
-        // exécution de la requête
+        // ex�cution de la requ�te
         $ok = $req1->execute();
-        // sortir en cas d'échec
+        // sortir en cas d'�chec
         if ( ! $ok) { return false; }
         
-        // recherche de l'identifiant (auto_increment) qui a été attribué à la trace
+        // recherche de l'identifiant (auto_increment) qui a �t� attribu� � la trace
         $txt_req2 = "Select max(id) as idMax from tracegps_utilisateurs";
         $req2 = $this->cnx->prepare($txt_req2);
-        // extraction des données
+        // extraction des donn�es
         $req2->execute();
         $uneLigne = $req2->fetch(PDO::FETCH_OBJ);
         $unId = $uneLigne->idMax;
@@ -255,26 +255,26 @@ class DAO
     }
     
     
-    // enregistre le nouveau mot de passe $nouveauMdp de l'utilisateur $pseudo daprès l'avoir hashé en SHA1
-    // fournit true si la modification s'est bien effectuée, false sinon
-    // modifié par Jim le 9/1/2018
+    // enregistre le nouveau mot de passe $nouveauMdp de l'utilisateur $pseudo dapr�s l'avoir hash� en SHA1
+    // fournit true si la modification s'est bien effectu�e, false sinon
+    // modifi� par Jim le 9/1/2018
     public function modifierMdpUtilisateur($pseudo, $nouveauMdp) {
-        // préparation de la requête
+        // pr�paration de la requ�te
         $txt_req = "update tracegps_utilisateurs set mdpSha1 = :nouveauMdp";
         $txt_req .= " where pseudo = :pseudo";
         $req = $this->cnx->prepare($txt_req);
-        // liaison de la requête et de ses paramètres
+        // liaison de la requ�te et de ses param�tres
         $req->bindValue("nouveauMdp", sha1($nouveauMdp), PDO::PARAM_STR);
         $req->bindValue("pseudo", $pseudo, PDO::PARAM_STR);
-        // exécution de la requête
+        // ex�cution de la requ�te
         $ok = $req->execute();
         return $ok;
     }
     
     
     // supprime l'utilisateur $pseudo dans la bdd, ainsi que ses traces et ses autorisations
-    // fournit true si l'effacement s'est bien effectué, false sinon
-    // modifié par Jim le 9/1/2018
+    // fournit true si l'effacement s'est bien effectu�, false sinon
+    // modifi� par Jim le 9/1/2018
     public function supprimerUnUtilisateur($pseudo) {
         $unUtilisateur = $this->getUnUtilisateur($pseudo);
         if ($unUtilisateur == null) {
@@ -289,31 +289,31 @@ class DAO
                 $this->supprimerUneTrace($uneTrace->getId());
             }
             
-            // préparation de la requête de suppression des autorisations
+            // pr�paration de la requ�te de suppression des autorisations
             $txt_req1 = "delete from tracegps_autorisations" ;
             $txt_req1 .= " where idAutorisant = :idUtilisateur or idAutorise = :idUtilisateur";
             $req1 = $this->cnx->prepare($txt_req1);
-            // liaison de la requête et de ses paramètres
+            // liaison de la requ�te et de ses param�tres
             $req1->bindValue("idUtilisateur", utf8_decode($idUtilisateur), PDO::PARAM_INT);
-            // exécution de la requête
+            // ex�cution de la requ�te
             $ok = $req1->execute();
             
-            // préparation de la requête de suppression de l'utilisateur
+            // pr�paration de la requ�te de suppression de l'utilisateur
             $txt_req2 = "delete from tracegps_utilisateurs" ;
             $txt_req2 .= " where pseudo = :pseudo";
             $req2 = $this->cnx->prepare($txt_req2);
-            // liaison de la requête et de ses paramètres
+            // liaison de la requ�te et de ses param�tres
             $req2->bindValue("pseudo", utf8_decode($pseudo), PDO::PARAM_STR);
-            // exécution de la requête
+            // ex�cution de la requ�te
             $ok = $req2->execute();
             return $ok;
         }
     }
     
     
-    // envoie un mail à l'utilisateur $pseudo avec son nouveau mot de passe $nouveauMdp
-    // retourne true si envoi correct, false en cas de problème d'envoi
-    // modifié par Jim le 9/1/2018
+    // envoie un mail � l'utilisateur $pseudo avec son nouveau mot de passe $nouveauMdp
+    // retourne true si envoi correct, false en cas de probl�me d'envoi
+    // modifi� par Jim le 9/1/2018
     public function envoyerMdp($pseudo, $nouveauMdp) {
         global $ADR_MAIL_EMETTEUR;
         // si le pseudo n'est pas dans la table tracegps_utilisateurs :
@@ -322,46 +322,46 @@ class DAO
         // recherche de l'adresse mail
         $adrMail = $this->getUnUtilisateur($pseudo)->getAdrMail();
         
-        // envoie un mail à l'utilisateur avec son nouveau mot de passe
-        $sujet = "Modification de votre mot de passe d'accès au service TraceGPS";
-        $message = "Cher(chère) " . $pseudo . "\n\n";
-        $message .= "Votre mot de passe d'accès au service service TraceGPS a été modifié.\n\n";
+        // envoie un mail � l'utilisateur avec son nouveau mot de passe
+        $sujet = "Modification de votre mot de passe d'acc�s au service TraceGPS";
+        $message = "Cher(ch�re) " . $pseudo . "\n\n";
+        $message .= "Votre mot de passe d'acc�s au service service TraceGPS a �t� modifi�.\n\n";
         $message .= "Votre nouveau mot de passe est : " . $nouveauMdp ;
         $ok = Outils::envoyerMail ($adrMail, $sujet, $message, $ADR_MAIL_EMETTEUR);
         return $ok;
     }
     
     
-    // Le code restant à développer va être réparti entre les membres de l'équipe de développement.
-    // Afin de limiter les conflits avec GitHub, il est décidé d'attribuer une zone de ce fichier à chaque développeur.
-    // Développeur 1 : lignes 350 à 549
-    // Développeur 2 : lignes 550 à 749
-    // Développeur 3 : lignes 750 à 950
+    // Le code restant � d�velopper va �tre r�parti entre les membres de l'�quipe de d�veloppement.
+    // Afin de limiter les conflits avec GitHub, il est d�cid� d'attribuer une zone de ce fichier � chaque d�veloppeur.
+    // D�veloppeur 1 : lignes 350 � 549
+    // D�veloppeur 2 : lignes 550 � 749
+    // D�veloppeur 3 : lignes 750 � 950
     
     // Quelques conseils pour le travail collaboratif :
-    // avant d'attaquer un cycle de développement (début de séance, nouvelle méthode, ...), faites un Pull pour récupérer 
-    // la dernière version du fichier.
-    // Après avoir testé et validé une méthode, faites un commit et un push pour transmettre cette version aux autres développeurs.
+    // avant d'attaquer un cycle de d�veloppement (d�but de s�ance, nouvelle m�thode, ...), faites un Pull pour r�cup�rer 
+    // la derni�re version du fichier.
+    // Apr�s avoir test� et valid� une m�thode, faites un commit et un push pour transmettre cette version aux autres d�veloppeurs.
     
     
     
     
     
     // --------------------------------------------------------------------------------------
-    // début de la zone attribuée au développeur 1 (Ogu) : lignes 350 à 549
+    // d�but de la zone attribu�e au d�veloppeur 1 (Ogu) : lignes 350 � 549
     // --------------------------------------------------------------------------------------
     
     public function existeAdrMailUtilisateur($adrMail)
     {
         $txt_req1 = "select * from tracegps_utilisateurs where adrMail = :adrMail" ;
         $req1 = $this->cnx->prepare($txt_req1);
-        // liaison de la requête et de ses paramètres
+        // liaison de la requ�te et de ses param�tres
         $req1->bindValue("adrMail", utf8_decode($adrMail), PDO::PARAM_STR);
-        // exécution de la requête
+        // ex�cution de la requ�te
         $req1->execute();
         
         $nbReponses = $req1->fetchColumn(0);
-        // libère les ressources du jeu de données
+        // lib�re les ressources du jeu de donn�es
         $req1->closeCursor();
         
         if($nbReponses == 0)
@@ -376,13 +376,13 @@ class DAO
         $txt_req1 = "select * from tracegps_autorisations where idAutorisant = :idAutorisant AND idAutorise = :idAutorise";
         
         $req1 = $this->cnx->prepare($txt_req1);
-        $req1->bindValue("idAutorisant", utf8_decode($idAutorisant), PDO::PARAM_INT);
-        $req1->bindValue("idAutorise", utf8_decode($idAutorise), PDO::PARAM_INT);
+        $req1->bindValue("idAutorisant", $idAutorisant, PDO::PARAM_INT);
+        $req1->bindValue("idAutorise", $idAutorise, PDO::PARAM_INT);
         
         $req1->execute();
         
         $nbReponses = $req1->fetchColumn(0);
-        // libère les ressources du jeu de données
+        // lib�re les ressources du jeu de donn�es
         $req1->closeCursor();
         
         if($nbReponses == 0)
@@ -395,8 +395,8 @@ class DAO
     {
         $txt_req1 = "INSERT INTO tracegps_autorisations VALUES(:idAutorisant, :idAutorise)";
         $req1 = $this->cnx->prepare($txt_req1);
-        $req1->bindValue("idAutorisant", utf8_decode($idAutorisant), PDO::PARAM_INT);
-        $req1->bindValue("idAutorise", utf8_decode($idAutorise), PDO::PARAM_INT);
+        $req1->bindValue("idAutorisant", $idAutorisant, PDO::PARAM_INT);
+        $req1->bindValue("idAutorise", $idAutorise, PDO::PARAM_INT);
         
         $ok = $req1->execute();
         
@@ -405,12 +405,105 @@ class DAO
         
     }
  
+   
+    
     // --------------------------------------------------------------------------------------
-    // début de la zone attribuée au développeur 2 (xxxxxxxxxxxxxxxxxxxx) : lignes 550 à 749
+    // d�but de la zone attribu�e au d�veloppeur 2 (Vincent) : lignes 550 � 749
     // --------------------------------------------------------------------------------------
+
+    public function getLesUtilisateursAutorisant($idUtilisateur)
+    {
+        $txt_req = "select * from tracegps_autorisations, tracegps_vue_utilisateurs where id = idAutorisant and idAutorise = :id";
+        
+        $req = $this->cnx->prepare($txt_req);
+        $req->bindValue("id", $idUtilisateur, PDO::PARAM_INT);
+        
+        // extraction des donn�es
+        $req->execute();
+        $uneLigne = $req->fetch(PDO::FETCH_OBJ);
+        
+        // construction d'une collection d'objets Utilisateur
+        $lesUtilisateurs = array();
+        // tant qu'une ligne est trouv�e :
+        while ($uneLigne) {
+            // cr�ation d'un objet Utilisateur
+            $unId = utf8_encode($uneLigne->id);
+            $unPseudo = utf8_encode($uneLigne->pseudo);
+            $unMdpSha1 = utf8_encode($uneLigne->mdpSha1);
+            $uneAdrMail = utf8_encode($uneLigne->adrMail);
+            $unNumTel = utf8_encode($uneLigne->numTel);
+            $unNiveau = utf8_encode($uneLigne->niveau);
+            $uneDateCreation = utf8_encode($uneLigne->dateCreation);
+            $unNbTraces = utf8_encode($uneLigne->nbTraces);
+            $uneDateDerniereTrace = utf8_encode($uneLigne->dateDerniereTrace);
+            
+            $unUtilisateur = new Utilisateur($unId, $unPseudo, $unMdpSha1, $uneAdrMail, $unNumTel, $unNiveau, $uneDateCreation, $unNbTraces, $uneDateDerniereTrace);
+            // ajout de l'utilisateur � la collection
+            $lesUtilisateurs[] = $unUtilisateur;
+            // extrait la ligne suivante
+            $uneLigne = $req->fetch(PDO::FETCH_OBJ);
+        }
+        // lib�re les ressources du jeu de donn�es
+        $req->closeCursor();
+        // fourniture de la collection
+        return $lesUtilisateurs;
+    }
+    
+    public function getLesUtilisateursAutorises($idUtilisateur)
+    {
+        $txt_req = "select * from tracegps_autorisations, tracegps_vue_utilisateurs  where tracegps_autorisations.idAutorise = tracegps_vue_utilisateurs.id  and idAutorisant = 2";
+        
+        $req = $this->cnx->prepare($txt_req);
+        $req->bindValue("id", $idUtilisateur, PDO::PARAM_INT);
+        
+        // extraction des donn�es
+        $req->execute();
+        $uneLigne = $req->fetch(PDO::FETCH_OBJ);
+        
+        // construction d'une collection d'objets Utilisateur
+        $lesUtilisateurs = array();
+        // tant qu'une ligne est trouv�e :
+        while ($uneLigne) {
+            // cr�ation d'un objet Utilisateur
+            $unId = utf8_encode($uneLigne->id);
+            $unPseudo = utf8_encode($uneLigne->pseudo);
+            $unMdpSha1 = utf8_encode($uneLigne->mdpSha1);
+            $uneAdrMail = utf8_encode($uneLigne->adrMail);
+            $unNumTel = utf8_encode($uneLigne->numTel);
+            $unNiveau = utf8_encode($uneLigne->niveau);
+            $uneDateCreation = utf8_encode($uneLigne->dateCreation);
+            $unNbTraces = utf8_encode($uneLigne->nbTraces);
+            $uneDateDerniereTrace = utf8_encode($uneLigne->dateDerniereTrace);
+            
+            $unUtilisateur = new Utilisateur($unId, $unPseudo, $unMdpSha1, $uneAdrMail, $unNumTel, $unNiveau, $uneDateCreation, $unNbTraces, $uneDateDerniereTrace);
+            // ajout de l'utilisateur � la collection
+            $lesUtilisateurs[] = $unUtilisateur;
+            // extrait la ligne suivante
+            $uneLigne = $req->fetch(PDO::FETCH_OBJ);
+        }
+        // lib�re les ressources du jeu de donn�es
+        $req->closeCursor();
+        // fourniture de la collection
+        return $lesUtilisateurs;
+    }
+
+    public function supprimerUneAutorisation($idAutorisant, $idAutorise) 
+    {
+        $txt_req1 = "DELETE FROM tracegps_autorisations WHERE idAutorisant= :idAutorisant AND  idAutorise = :idAutorise";
+        $req1 = $this->cnx->prepare($txt_req1);
+        $req1->bindValue("idAutorisant", $idAutorisant, PDO::PARAM_INT);
+        $req1->bindValue("idAutorise", $idAutorise, PDO::PARAM_INT);
+        
+        $ok = $req1->execute();
+        
+        if ($ok) return true;
+        else return false;
+    }
+       
     
 
     
+<<<<<<< HEAD
     
     
     
@@ -607,6 +700,10 @@ class DAO
     
     // --------------------------------------------------------------------------------------
     // début de la zone attribuée au développeur 3 (riquier) : lignes 750 à 949
+=======
+    // --------------------------------------------------------------------------------------
+    // d�début de la zone attribuée au développeur  3 (xxxxxxxxxxxxxxxxxxxx) : lignes 750 � 949
+>>>>>>> branch 'master' of https://github.com/delasalle-sio-riquier-t/tracegps.git
     // --------------------------------------------------------------------------------------
     
     
@@ -842,7 +939,7 @@ class DAO
     
    
     // --------------------------------------------------------------------------------------
-    // début de la zone attribuée au développeur 3 (EPS Erwan) : lignes 950 à 1150
+    // début de la zone attribuée au développeur 4 (EPS Erwan) : lignes 950 à 1150
     // --------------------------------------------------------------------------------------
     
     // fournit un objet Trace à partir de son pseudo $idUtilisateur
@@ -858,7 +955,7 @@ class DAO
         $req->bindValue("idUtilisateur", $idUtilisateur, PDO::PARAM_INT);
         // extraction des données
         $req->execute();
-        $uneLigne = $req->fetch(PDO::FETCH_OBJ);    
+        $uneLigne = $req->fetch(PDO::FETCH_OBJ);
         
         // construction d'une collection d'objets Trace
         $lesTraces = array();
@@ -869,7 +966,7 @@ class DAO
             $uneDateDebut = utf8_encode($uneLigne->dateDebut);
             $uneDateFin = utf8_encode($uneLigne->dateFin);
             $terminee = utf8_encode($uneLigne->terminee);
-            $unIdUtilisateur = utf8_encode($uneLigne->idUtilisateur);     
+            $unIdUtilisateur = utf8_encode($uneLigne->idUtilisateur);
             
             $uneTrace = new Trace($unId, $uneDateDebut, $uneDateFin, $terminee, $unIdUtilisateur);
             
@@ -934,8 +1031,8 @@ class DAO
     public function creerUneTrace($uneTrace) {
         // préparation de la requête
         if ($uneTrace->getTerminee() == false) {
-        $txt_req1 = "insert into tracegps_traces (dateDebut, dateFin, terminee, idUtilisateur)";
-        $txt_req1 .= " values (:dateDebut, null, :terminee, :idUtilisateur)";
+            $txt_req1 = "insert into tracegps_traces (dateDebut, dateFin, terminee, idUtilisateur)";
+            $txt_req1 .= " values (:dateDebut, null, :terminee, :idUtilisateur)";
         } else {
             $txt_req1 = "insert into tracegps_traces (dateDebut, dateFin, terminee, idUtilisateur)";
             $txt_req1 .= " values (:dateDebut, :dateFin, :terminee, :idUtilisateur)";
@@ -947,7 +1044,7 @@ class DAO
         if ($uneTrace->getTerminee() == true) {
             $req1->bindValue("dateFin", $uneTrace->getDateHeureFin(), PDO::PARAM_STR);
         }
-
+        
         $req1->bindValue("terminee", $uneTrace->getTerminee(), PDO::PARAM_INT);
         $req1->bindValue("idUtilisateur", $uneTrace->getIdUtilisateur(), PDO::PARAM_INT);
         // exécution de la requête
@@ -1008,9 +1105,9 @@ class DAO
         $ok = $req1->execute();
         
         return $ok;
-    }   
+    } 
     
 } // fin de la classe DAO
 
 // ATTENTION : on ne met pas de balise de fin de script pour ne pas prendre le risque
-// d'enregistrer d'espaces après la balise de fin de script !!!!!!!!!!!!
+// d'enregistrer d'espaces apr�s la balise de fin de script !!!!!!!!!!!!

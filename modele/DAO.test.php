@@ -228,6 +228,7 @@ echo "<p>La cr�ation de l'autorisation de l'utilisateur 2 vers l'utilisateur 1
 if ($dao->creerUneAutorisation(2, 1)) $ok = "oui"; else $ok = "non";
 echo "<p>La cr�ation de l'autorisation de l'utilisateur 2 vers l'utilisateur 1 a r�ussi : <b>" . $ok . "</b><br>";
 
+
 // test de la méthode getLesPointsDeTrace ---------------------------------------------------------
 // modifié par Jim le 13/8/2018
 echo "<h3>Test de getLesPointsDeTrace : </h3>";
@@ -237,6 +238,32 @@ echo "<p>Nombre de points de la trace 1 : " . $nbPoints . "</p>";
 // affichage des points
 foreach ($lesPoints as $unPoint)
 {   echo ($unPoint->toString());
+echo ('<br>');
+}
+
+// test de la m�thode getLesUtilisateursAutorisant ------------------------------------------------
+// modifi� par Jim le 13/8/2018
+// test de la m�thode getLesUtilisateursAutorisant ------------------------------------------------
+// modifi� par Jim le 13/8/2018
+echo "<h3>Test de getLesUtilisateursAutorisant(idUtilisateur) : </h3>";
+$lesUtilisateurs = $dao->getLesUtilisateursAutorisant(4);
+$nbReponses = sizeof($lesUtilisateurs);
+echo "<p>Nombre d'utilisateurs autorisant l'utilisateur 4 � voir leurs parcours : " . $nbReponses . "</p>";
+// affichage des utilisateurs
+foreach ($lesUtilisateurs as $unUtilisateur)
+{   echo ($unUtilisateur->toString());
+echo ('<br>');
+}
+
+// test de la m�thode getLesUtilisateursAutorises -------------------------------------------------
+// modifi� par Jim le 13/8/2018
+echo "<h3>Test de getLesUtilisateursAutorises(idUtilisateur) : </h3>";
+$lesUtilisateurs = $dao->getLesUtilisateursAutorises(2);
+$nbReponses = sizeof($lesUtilisateurs);
+echo "<p>Nombre d'utilisateurs autoris�s par l'utilisateur 2 : " . $nbReponses . "</p>";
+// affichage des utilisateurs
+foreach ($lesUtilisateurs as $unUtilisateur)
+{	echo ($unUtilisateur->toString());
 echo ('<br>');
 }
 
@@ -330,9 +357,44 @@ echo ('<br>');
 
 
 
+
 // --------------------------------------------------------------------------------------
-// début de la zone attribuée au développeur 2 (xxxxxxxxxxxxxxxxxxxx) : lignes 300 à 399
+// début de la zone attribuée au développeur 2 (vincent) : lignes 300 à 399
 // --------------------------------------------------------------------------------------
+// test de la m�thode getLesUtilisateursAutorisant ------------------------------------------------
+// modifi� par Jim le 13/8/2018
+echo "<h3>Test de getLesUtilisateursAutorisant(idUtilisateur) : </h3>";
+$lesUtilisateurs = $dao->getLesUtilisateursAutorisant(4);
+$nbReponses = sizeof($lesUtilisateurs);
+echo "<p>Nombre d'utilisateurs autorisant l'utilisateur 4 � voir leurs parcours : " . $nbReponses . "</p>";
+// affichage des utilisateurs
+foreach ($lesUtilisateurs as $unUtilisateur)
+{   echo ($unUtilisateur->toString());
+echo ('<br>');
+}
+
+// test de la m�thode getLesUtilisateursAutorises -------------------------------------------------
+// modifi� par Jim le 13/8/2018
+echo "<h3>Test de getLesUtilisateursAutorises(idUtilisateur) : </h3>";
+$lesUtilisateurs = $dao->getLesUtilisateursAutorises(2);
+$nbReponses = sizeof($lesUtilisateurs);
+echo "<p>Nombre d'utilisateurs autoris�s par l'utilisateur 2 : " . $nbReponses . "</p>";
+// affichage des utilisateurs
+foreach ($lesUtilisateurs as $unUtilisateur)
+{	echo ($unUtilisateur->toString());
+echo ('<br>');
+}
+
+// test de la m�thode supprimerUneAutorisation ----------------------------------------------------
+// modifi� par Jim le 13/8/2018
+echo "<h3>Test de supprimerUneAutorisation : </h3>";
+// on cr�e une autorisation
+if ($dao->creerUneAutorisation(2, 1)) $ok = "oui"; else $ok = "non";
+echo "<p>La cr�ation de l'autorisation de l'utilisateur 2 vers l'utilisateur 1 a r�ussi : <b>" . $ok . "</b><br>";
+// puis on la supprime
+if ($dao->supprimerUneAutorisation(2, 1)) $ok = "oui"; else $ok = "non";
+echo "<p>La suppression de l'autorisation de l'utilisateur 2 vers l'utilisateur 1 a r�ussi : <b>" . $ok . "</b><br>";
+
 
 
 
