@@ -411,15 +411,15 @@ class DAO
         
         
         $req = $this->cnx->prepare($txt_req);
-        // extraction des donnÈes
+        // extraction des donnÔøΩes
         $req->execute();
         $uneLigne = $req->fetch(PDO::FETCH_OBJ);
         
         // construction d'une collection d'objets Utilisateur
         $lesTraces = array();
-        // tant qu'une ligne est trouvÈe :
+        // tant qu'une ligne est trouvÔøΩe :
         while ($uneLigne) {
-            // crÈation d'un objet Utilisateur
+            // crÔøΩation d'un objet Utilisateur
             $unId = utf8_encode($uneLigne->id);
             $uneDateHeureDebut = utf8_encode($uneLigne->dateDebut);
             $uneDateHeureFin = utf8_encode($uneLigne->dateFin);
@@ -429,12 +429,12 @@ class DAO
             $uneTrace = new Trace($unId, $uneDateHeureDebut, $uneDateHeureFin,$terminee, $unIdUtilisateur);
             $uneTrace->setLesPointsDeTrace($this->getLesPointsDeTrace($unId));
             
-            // ajout de l'utilisateur ‡ la collection
+            // ajout de l'utilisateur ÔøΩ la collection
             $lesTraces[] = $uneTrace;
             // extrait la ligne suivante
             $uneLigne = $req->fetch(PDO::FETCH_OBJ);
         }
-        // libËre les ressources du jeu de donnÈes
+        // libÔøΩre les ressources du jeu de donnÔøΩes
         $req->closeCursor();
         // fourniture de la collection
         return $lesTraces;
@@ -533,210 +533,9 @@ class DAO
         else return false;
     }
        
-    
-
-    
-<<<<<<< HEAD
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+  
     // --------------------------------------------------------------------------------------
     // d√©but de la zone attribu√©e au d√©veloppeur 3 (riquier) : lignes 750 √† 949
-=======
-    // --------------------------------------------------------------------------------------
-    // dÔøΩd√©but de la zone attribu√©e au d√©veloppeur  3 (xxxxxxxxxxxxxxxxxxxx) : lignes 750 ÔøΩ 949
->>>>>>> branch 'master' of https://github.com/delasalle-sio-riquier-t/tracegps.git
     // --------------------------------------------------------------------------------------
     
     
@@ -783,194 +582,7 @@ class DAO
     
     
    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-   
+
     // --------------------------------------------------------------------------------------
     // d√©but de la zone attribu√©e au d√©veloppeur 4 (EPS Erwan) : lignes 950 √† 1150
     // --------------------------------------------------------------------------------------
