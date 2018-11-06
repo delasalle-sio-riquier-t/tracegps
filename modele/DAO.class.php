@@ -411,15 +411,15 @@ class DAO
         
         
         $req = $this->cnx->prepare($txt_req);
-        // extraction des donn�es
+        // extraction des donn�es
         $req->execute();
         $uneLigne = $req->fetch(PDO::FETCH_OBJ);
         
         // construction d'une collection d'objets Utilisateur
         $lesTraces = array();
-        // tant qu'une ligne est trouv�e :
+        // tant qu'une ligne est trouv�e :
         while ($uneLigne) {
-            // cr�ation d'un objet Utilisateur
+            // cr�ation d'un objet Utilisateur
             $unId = utf8_encode($uneLigne->id);
             $uneDateHeureDebut = utf8_encode($uneLigne->dateDebut);
             $uneDateHeureFin = utf8_encode($uneLigne->dateFin);
@@ -429,12 +429,12 @@ class DAO
             $uneTrace = new Trace($unId, $uneDateHeureDebut, $uneDateHeureFin,$terminee, $unIdUtilisateur);
             $uneTrace->setLesPointsDeTrace($this->getLesPointsDeTrace($unId));
             
-            // ajout de l'utilisateur � la collection
+            // ajout de l'utilisateur � la collection
             $lesTraces[] = $uneTrace;
             // extrait la ligne suivante
             $uneLigne = $req->fetch(PDO::FETCH_OBJ);
         }
-        // lib�re les ressources du jeu de donn�es
+        // lib�re les ressources du jeu de donn�es
         $req->closeCursor();
         // fourniture de la collection
         return $lesTraces;
@@ -536,280 +536,18 @@ class DAO
     
 
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     // --------------------------------------------------------------------------------------
-    // début de la zone attribuée au développeur 3 (riquier) : lignes 750 à 949
-
+    // d�début de la zone attribuée au développeur  3 (xxxxxxxxxxxxxxxxxxxx) : lignes 750 � 949
+    // --------------------------------------------------------------------------------------
     
-    public function getLesPointsDeTrace($idTrace) {
-        // préparation de la requête de recherche
-        $txt_req = "Select id, latitude, longitude, altitude, dateHeure, rythmeCardio";
-        $txt_req .= " from tracegps_Points";
-        $txt_req .= " where idTrace = $idTrace";
-        $txt_req .= " order by id";
-        
-        $req = $this->cnx->prepare($txt_req);
-        // extraction des données
-        $req->execute();
-        $uneLigne = $req->fetch(PDO::FETCH_OBJ);
-        
-        // construction d'une collection d'objets Utilisateur
-        $lesPointsDeTrace = array();
-        // tant qu'une ligne est trouvée :
-        while ($uneLigne) {
-            // création d'un objet Utilisateur
-            
-            $unId = utf8_encode($uneLigne->id);
-            $uneLatitude = utf8_encode($uneLigne->latitude);
-            $uneLongitude = utf8_encode($uneLigne->longitude);
-            $uneAltitude = utf8_encode($uneLigne->altitude);
-            $uneDateHeure = utf8_encode($uneLigne->dateHeure);
-            $unRythmeCardio = utf8_encode($uneLigne->rythmeCardio);
-            
-            $unTempsCumule = 0 ;	// temps cumulé depuis le départ (en secondes)
-            $uneDistanceCumulee = 0;	// distance cumulée depuis le départ (en Km)
-            $uneVitesse = 0;
-            
-            $unPointDeTrace = new PointDeTrace($idTrace, $unId, $uneLatitude, $uneLongitude, $uneAltitude, $uneDateHeure, $unRythmeCardio, $unTempsCumule, $uneDistanceCumulee, $uneVitesse);
-            // ajout de l'utilisateur à la collection
-            $lesPointsDeTrace[] = $unPointDeTrace;
-            // extrait la ligne suivante
-            $uneLigne = $req->fetch(PDO::FETCH_OBJ);
-        }
-        // libère les ressources du jeu de données
-        $req->closeCursor();
-        // fourniture de la collection
-        return $lesPointsDeTrace;
-    }
     
-    public function creerUnPointDeTrace($unpointDeTrace) {
-        
-        
-
-        // préparation de la requête
-        $txt_req1 = "insert into tracegps_points (idTrace, id, latitude, longitude, altitude, dateHeure, rythmeCardio)";
-        $txt_req1 .= " values (:idTrace, :id, :latitude, :longitude, :altitude, :dateHeure, :rythmeCardio)";
-        $req1 = $this->cnx->prepare($txt_req1);
-
-        // liaison de la requête et de ses paramètres
-        $req1->bindValue("idTrace", $unpointDeTrace->getIdTrace(), PDO::PARAM_INT);
-        $req1->bindValue("id", $unpointDeTrace->getId(), PDO::PARAM_INT);
-        $req1->bindValue("latitude", $unpointDeTrace->getLatitude(), PDO::PARAM_STR);
-        $req1->bindValue("longitude", $unpointDeTrace->getLongitude(), PDO::PARAM_STR);
-        $req1->bindValue("altitude", $unpointDeTrace->getAltitude(), PDO::PARAM_STR);
-        $req1->bindValue("dateHeure", $unpointDeTrace->getDateHeure(), PDO::PARAM_STR);
-        $req1->bindValue("rythmeCardio", $unpointDeTrace->getRythmeCardio(), PDO::PARAM_INT);
-
-        // exécution de la requête
-        $ok = $req1->execute();
-
-        // sortir en cas d'échec
-        if ( ! $ok) { return false; }
-        
-        if ($unpointDeTrace->getIdTrace() == 1)
-        {
-        $txt_req2 = "update tracegps_utilisateurs set dateHeureDebut = ". $unpointDeTrace->getDateHeure().";";
-        $req2 = $this->cnx->prepare($txt_req2);
-        // extraction des données
-        $req2->execute();
-        }
-        return true;
-    }
-
-   
+    
+    
+    
+    
+    
+    
+    
     
     
     
