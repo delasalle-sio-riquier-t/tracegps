@@ -348,205 +348,63 @@ class DAO
     
     
     // --------------------------------------------------------------------------------------
-    // début de la zone attribuée au développeur 1 (xxxxxxxxxxxxxxxxxxxx) : lignes 350 à 549
+    // début de la zone attribuée au développeur 1 (Ogu) : lignes 350 à 549
     // --------------------------------------------------------------------------------------
     
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    public function existeAdrMailUtilisateur($adrMail)
+    {
+        $txt_req1 = "select * from tracegps_utilisateurs where adrMail = :adrMail" ;
+        $req1 = $this->cnx->prepare($txt_req1);
+        // liaison de la requête et de ses paramètres
+        $req1->bindValue("adrMail", utf8_decode($adrMail), PDO::PARAM_STR);
+        // exécution de la requête
+        $req1->execute();
+        
+        $nbReponses = $req1->fetchColumn(0);
+        // libère les ressources du jeu de données
+        $req1->closeCursor();
+        
+        if($nbReponses == 0)
+        {   return false;}
+        else 
+        {   return true;}
+        
+    }
+    
+    public function autoriseAConsulter($idAutorisant, $idAutorise)
+    {
+        $txt_req1 = "select * from tracegps_autorisations where idAutorisant = :idAutorisant AND idAutorise = :idAutorise";
+        
+        $req1 = $this->cnx->prepare($txt_req1);
+        $req1->bindValue("idAutorisant", utf8_decode($idAutorisant), PDO::PARAM_INT);
+        $req1->bindValue("idAutorise", utf8_decode($idAutorise), PDO::PARAM_INT);
+        
+        $req1->execute();
+        
+        $nbReponses = $req1->fetchColumn(0);
+        // libère les ressources du jeu de données
+        $req1->closeCursor();
+        
+        if($nbReponses == 0)
+        {   return false;}
+        else
+        {   return true;}
+    }
+    
+    public function creerUneAutorisation($idAutorisant, $idAutorise)
+    {
+        $txt_req1 = "INSERT INTO tracegps_autorisations VALUES(:idAutorisant, :idAutorise)";
+        $req1 = $this->cnx->prepare($txt_req1);
+        $req1->bindValue("idAutorisant", utf8_decode($idAutorisant), PDO::PARAM_INT);
+        $req1->bindValue("idAutorise", utf8_decode($idAutorise), PDO::PARAM_INT);
+        
+        $ok = $req1->execute();
+        
+        if ($ok) return true;
+        else return false;
+        
+    }
+ 
     // --------------------------------------------------------------------------------------
     // début de la zone attribuée au développeur 2 (xxxxxxxxxxxxxxxxxxxx) : lignes 550 à 749
     // --------------------------------------------------------------------------------------
