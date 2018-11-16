@@ -92,7 +92,6 @@ foreach ($lesUtilisateurs as $unUtilisateur)
 }
 */
 
-
 /*
 // test de la méthode creerUnUtilisateur ----------------------------------------------------------
 // modifié par Jim le 12/8/2018
@@ -234,15 +233,15 @@ else {
 
 // test de la méthode getLesPointsDeTrace ---------------------------------------------------------
 // modifié par Jim le 13/8/2018
-echo "<h3>Test de getLesPointsDeTrace : </h3>";
-$lesPoints = $dao->getLesPointsDeTrace(1);
-$nbPoints = sizeof($lesPoints);
-echo "<p>Nombre de points de la trace 1 : " . $nbPoints . "</p>";
-// affichage des points
-foreach ($lesPoints as $unPoint)
-{   echo ($unPoint->toString());
-    echo ('<br>');
-}
+// echo "<h3>Test de getLesPointsDeTrace : </h3>";
+// $lesPoints = $dao->getLesPointsDeTrace(1);
+// $nbPoints = sizeof($lesPoints);
+// echo "<p>Nombre de points de la trace 1 : " . $nbPoints . "</p>";
+// // affichage des points
+// foreach ($lesPoints as $unPoint)
+// {   echo ($unPoint->toString());
+//     echo ('<br>');
+// }
 
 
 
@@ -275,15 +274,15 @@ foreach ($lesPoints as $unPoint)
 
 // test de la m�thode getToutesLesTraces ----------------------------------------------------------
 // modifi� par Jim le 14/8/2018
-echo "<h3>Test de getToutesLesTraces : </h3>";
-$lesTraces = $dao->getToutesLesTraces();
-$nbReponses = sizeof($lesTraces);
-echo "<p>Nombre de traces : " . $nbReponses . "</p>";
-// affichage des traces
-foreach ($lesTraces as $uneTrace)
-{   echo ($uneTrace->toString());
-    echo ('<br>');
-}
+// echo "<h3>Test de getToutesLesTraces : </h3>";
+// $lesTraces = $dao->getToutesLesTraces();
+// $nbReponses = sizeof($lesTraces);
+// echo "<p>Nombre de traces : " . $nbReponses . "</p>";
+// // affichage des traces
+// foreach ($lesTraces as $uneTrace)
+// {   echo ($uneTrace->toString());
+//     echo ('<br>');
+// }
 
 
 
@@ -379,38 +378,53 @@ foreach ($lesTraces as $uneTrace)
 // --------------------------------------------------------------------------------------
 // test de la m�thode getLesUtilisateursAutorisant ------------------------------------------------
 // modifi� par Jim le 13/8/2018
-echo "<h3>Test de getLesUtilisateursAutorisant(idUtilisateur) : </h3>";
-$lesUtilisateurs = $dao->getLesUtilisateursAutorisant(4);
-$nbReponses = sizeof($lesUtilisateurs);
-echo "<p>Nombre d'utilisateurs autorisant l'utilisateur 4 � voir leurs parcours : " . $nbReponses . "</p>";
-// affichage des utilisateurs
-foreach ($lesUtilisateurs as $unUtilisateur)
-{   echo ($unUtilisateur->toString());
-echo ('<br>');
+// echo "<h3>Test de getLesUtilisateursAutorisant(idUtilisateur) : </h3>";
+// $lesUtilisateurs = $dao->getLesUtilisateursAutorisant(4);
+// $nbReponses = sizeof($lesUtilisateurs);
+// echo "<p>Nombre d'utilisateurs autorisant l'utilisateur 4 � voir leurs parcours : " . $nbReponses . "</p>";
+// // affichage des utilisateurs
+// foreach ($lesUtilisateurs as $unUtilisateur)
+// {   echo ($unUtilisateur->toString());
+// echo ('<br>');
+// }
+
+// // test de la m�thode getLesUtilisateursAutorises -------------------------------------------------
+// // modifi� par Jim le 13/8/2018
+// echo "<h3>Test de getLesUtilisateursAutorises(idUtilisateur) : </h3>";
+// $lesUtilisateurs = $dao->getLesUtilisateursAutorises(2);
+// $nbReponses = sizeof($lesUtilisateurs);
+// echo "<p>Nombre d'utilisateurs autoris�s par l'utilisateur 2 : " . $nbReponses . "</p>";
+// // affichage des utilisateurs
+// foreach ($lesUtilisateurs as $unUtilisateur)
+// {	echo ($unUtilisateur->toString());
+// echo ('<br>');
+// }
+
+// // test de la m�thode supprimerUneAutorisation ----------------------------------------------------
+// // modifi� par Jim le 13/8/2018
+// echo "<h3>Test de supprimerUneAutorisation : </h3>";
+// // on cr�e une autorisation
+// if ($dao->creerUneAutorisation(2, 1)) $ok = "oui"; else $ok = "non";
+// echo "<p>La cr�ation de l'autorisation de l'utilisateur 2 vers l'utilisateur 1 a r�ussi : <b>" . $ok . "</b><br>";
+// // puis on la supprime
+// if ($dao->supprimerUneAutorisation(2, 1)) $ok = "oui"; else $ok = "non";
+// echo "<p>La suppression de l'autorisation de l'utilisateur 2 vers l'utilisateur 1 a r�ussi : <b>" . $ok . "</b><br>";
+
+echo "<h3>Test de getUneTrace : </h3>";
+$uneTrace = $dao->getUneTrace(2);
+if ($uneTrace) {
+    echo "<p>La trace 2 existe : <br>" . $uneTrace->toString() . "</p>";
 }
-
-// test de la m�thode getLesUtilisateursAutorises -------------------------------------------------
-// modifi� par Jim le 13/8/2018
-echo "<h3>Test de getLesUtilisateursAutorises(idUtilisateur) : </h3>";
-$lesUtilisateurs = $dao->getLesUtilisateursAutorises(2);
-$nbReponses = sizeof($lesUtilisateurs);
-echo "<p>Nombre d'utilisateurs autoris�s par l'utilisateur 2 : " . $nbReponses . "</p>";
-// affichage des utilisateurs
-foreach ($lesUtilisateurs as $unUtilisateur)
-{	echo ($unUtilisateur->toString());
-echo ('<br>');
+else {
+    echo "<p>La trace 2 n'existe pas !</p>";
 }
-
-// test de la m�thode supprimerUneAutorisation ----------------------------------------------------
-// modifi� par Jim le 13/8/2018
-echo "<h3>Test de supprimerUneAutorisation : </h3>";
-// on cr�e une autorisation
-if ($dao->creerUneAutorisation(2, 1)) $ok = "oui"; else $ok = "non";
-echo "<p>La cr�ation de l'autorisation de l'utilisateur 2 vers l'utilisateur 1 a r�ussi : <b>" . $ok . "</b><br>";
-// puis on la supprime
-if ($dao->supprimerUneAutorisation(2, 1)) $ok = "oui"; else $ok = "non";
-echo "<p>La suppression de l'autorisation de l'utilisateur 2 vers l'utilisateur 1 a r�ussi : <b>" . $ok . "</b><br>";
-
+$uneTrace = $dao->getUneTrace(100);
+if ($uneTrace) {
+    echo "<p>La trace 100 existe : <br>" . $uneTrace->toString() . "</p>";
+}
+else {
+    echo "<p>La trace 100 n'existe pas !</p>";
+}
 
 
 

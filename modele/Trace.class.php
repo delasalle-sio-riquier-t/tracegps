@@ -229,12 +229,12 @@ class Trace
 
     public function getVitesseMoyenne()
     {
-        if (sizeof($this->lesPointsDeTrace) == 0)
+        if ($this->getDureeEnSecondes() == 0)
             return 0;
         else
         {
-            $distance = Trace::getDistanceTotale();
-            $secondes = Trace::getDureeEnSecondes();
+            $distance = $this->getDistanceTotale();
+            $secondes = $this->getDureeEnSecondes();
             return $distance / ($secondes / 3600);
         }
     }
