@@ -804,22 +804,25 @@ class DAO
     }
     
     public function terminerUneTrace($uneTrace) {
-        $lesPointsDeTraces = getLesPointsDeTrace($uneTrace);
+       
+        $dateFin = "";
+        $lesPointsDeTraces = DAO::getLesPointsDeTrace($uneTrace);
         
-        for ($i = 0; $i < sizeof($lesPointsDeTraces); $i++) {
-            if ($lesPointsDeTraces[$i] < sizeof($lesPointsDeTraces))
-                $dateFin = $lesPointsDeTraces[$i]->getDateHeure();
-        }
+        if ( sizeof($lesPointsDeTraces) == 0 ) return false;
         
+        $i = sizeof($lesPointsDeTraces) - 1;
+        
+        $dateFin = $lesPointsDeTraces[$i]->getDateHeure($lesPointsDeTraces[$i]);
+
         // préparation de la requête de la modifcation des autorisations
         $txt_req1 = "update tracegps_traces";
-        $txt_req1 .= " set terminee = :terminee and dateFin = :dateFin" ;
+        $txt_req1 .= " set terminee = 1, dateFin = :dateFin" ;
         $txt_req1 .= " where id = :idTrace";
         $req1 = $this->cnx->prepare($txt_req1);
         // liaison de la requête et de ses paramètres
         $req1->bindValue("idTrace", $uneTrace, PDO::PARAM_INT);
-        $req1->bindValue("terminee", 1, PDO::PARAM_INT);
         $req1->bindValue("dateFin", $dateFin, PDO::PARAM_STR);
+        
         // exécution de la requête
         $ok = $req1->execute();
         

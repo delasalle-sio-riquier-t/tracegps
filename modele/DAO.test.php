@@ -285,6 +285,21 @@ else {
 // }
 
 
+echo "<h3>Test de terminerUneTrace : </h3>";
+// on choisit une trace non terminée
+$unIdTrace = 3;
+// on l'affiche
+$laTrace = $dao->getUneTrace($unIdTrace);
+echo "<h4>l'objet laTrace avant l'appel de la méthode terminerUneTrace : </h4>";
+echo ($laTrace->toString());
+echo ('<br>');
+// on la termine
+$dao->terminerUneTrace($unIdTrace);
+// et on l'affiche à nouveau
+$laTrace = $dao->getUneTrace($unIdTrace);
+echo "<h4>l'objet laTrace après l'appel de la méthode terminerUneTrace : </h4>";
+echo ($laTrace->toString());
+echo ('<br>');
 
 
 
@@ -410,21 +425,21 @@ else {
 // if ($dao->supprimerUneAutorisation(2, 1)) $ok = "oui"; else $ok = "non";
 // echo "<p>La suppression de l'autorisation de l'utilisateur 2 vers l'utilisateur 1 a r�ussi : <b>" . $ok . "</b><br>";
 
-echo "<h3>Test de getUneTrace : </h3>";
-$uneTrace = $dao->getUneTrace(2);
-if ($uneTrace) {
-    echo "<p>La trace 2 existe : <br>" . $uneTrace->toString() . "</p>";
-}
-else {
-    echo "<p>La trace 2 n'existe pas !</p>";
-}
-$uneTrace = $dao->getUneTrace(100);
-if ($uneTrace) {
-    echo "<p>La trace 100 existe : <br>" . $uneTrace->toString() . "</p>";
-}
-else {
-    echo "<p>La trace 100 n'existe pas !</p>";
-}
+// echo "<h3>Test de getUneTrace : </h3>";
+// $uneTrace = $dao->getUneTrace(2);
+// if ($uneTrace) {
+//     echo "<p>La trace 2 existe : <br>" . $uneTrace->toString() . "</p>";
+// }
+// else {
+//     echo "<p>La trace 2 n'existe pas !</p>";
+// }
+// $uneTrace = $dao->getUneTrace(100);
+// if ($uneTrace) {
+//     echo "<p>La trace 100 existe : <br>" . $uneTrace->toString() . "</p>";
+// }
+// else {
+//     echo "<p>La trace 100 n'existe pas !</p>";
+// }
 
 
 
@@ -556,32 +571,32 @@ else {
 
 // test de la méthode creerUnPointDeTrace ---------------------------------------------------------
 // modifié par Jim le 13/8/2018
-echo "<h3>Test de creerUnPointDeTrace : </h3>";
-$trace2 = new Trace(0, "2017-12-18 14:00:00", null, false, 3);
-$ok = $dao->creerUneTrace($trace2);
-if ($ok) {
-    echo "<p>Trace bien enregistrée !</p>";
-    echo $trace2->toString();
+// echo "<h3>Test de creerUnPointDeTrace : </h3>";
+// $trace2 = new Trace(0, "2017-12-18 14:00:00", null, false, 3);
+// $ok = $dao->creerUneTrace($trace2);
+// if ($ok) {
+//     echo "<p>Trace bien enregistrée !</p>";
+//     echo $trace2->toString();
     
-    // on crée un premier point et on l'ajoute à la trace
-    $unIdTrace = $trace2->getId();
-    $unID = 1;
-    $uneLatitude = 48.20;
-    $uneLongitude = -1.55;
-    $uneAltitude = 50;
-    $uneDateHeure = date('Y-m-d H:i:s', time());
-    $unRythmeCardio = 80;
-    $unTempsCumule = 0;
-    $uneDistanceCumulee = 0;
-    $uneVitesse = 15;
-    $unPoint = new PointDeTrace($unIdTrace, $unID, $uneLatitude, $uneLongitude, $uneAltitude, $uneDateHeure, $unRythmeCardio, $unTempsCumule, $uneDistanceCumulee, $uneVitesse);
-    $ok = $dao->creerUnPointDeTrace($unPoint);
+//     // on crée un premier point et on l'ajoute à la trace
+//     $unIdTrace = $trace2->getId();
+//     $unID = 1;
+//     $uneLatitude = 48.20;
+//     $uneLongitude = -1.55;
+//     $uneAltitude = 50;
+//     $uneDateHeure = date('Y-m-d H:i:s', time());
+//     $unRythmeCardio = 80;
+//     $unTempsCumule = 0;
+//     $uneDistanceCumulee = 0;
+//     $uneVitesse = 15;
+//     $unPoint = new PointDeTrace($unIdTrace, $unID, $uneLatitude, $uneLongitude, $uneAltitude, $uneDateHeure, $unRythmeCardio, $unTempsCumule, $uneDistanceCumulee, $uneVitesse);
+//     $ok = $dao->creerUnPointDeTrace($unPoint);
     
-    echo $trace2->toString();
-}
-else {
-    echo "<p>Echec lors de l'enregistrement de la trace !</p>";
-}
+//     echo $trace2->toString();
+// }
+// else {
+//     echo "<p>Echec lors de l'enregistrement de la trace !</p>";
+// }
 
 
 
