@@ -427,7 +427,14 @@ class DAO
             $unIdUtilisateur = utf8_encode($uneLigne->idUtilisateur);
             
             $uneTrace = new Trace($unId, $uneDateHeureDebut, $uneDateHeureFin,$terminee, $unIdUtilisateur);
-            $uneTrace->setLesPointsDeTrace($this->getLesPointsDeTrace($unId));
+            $lesPoints = $this->getLesPointsDeTrace($unId);
+            
+            //Pour chaque point de les points, appeller ajouterPoint de trace dans une boucle foreach
+            foreach($lesPoints as $unPoint)
+            {
+                $uneTrace->ajouterPoint($unPoint);
+            }
+            
             
             // ajout de l'utilisateur � la collection
             $lesTraces[] = $uneTrace;
