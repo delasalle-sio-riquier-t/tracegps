@@ -427,7 +427,14 @@ class DAO
             $unIdUtilisateur = utf8_encode($uneLigne->idUtilisateur);
             
             $uneTrace = new Trace($unId, $uneDateHeureDebut, $uneDateHeureFin,$terminee, $unIdUtilisateur);
-            $uneTrace->setLesPointsDeTrace($this->getLesPointsDeTrace($unId));
+            $lesPoints = $this->getLesPointsDeTrace($unId);
+            
+            //Pour chaque point de les points, appeller ajouterPoint de trace dans une boucle foreach
+            foreach($lesPoints as $unPoint)
+            {
+                $uneTrace->ajouterPoint($unPoint);
+            }
+            
             
             // ajout de l'utilisateur � la collection
             $lesTraces[] = $uneTrace;
@@ -614,6 +621,40 @@ class DAO
         return true;
     }
     
+    public function getUneTrace($idTrace) {
+        
+        
+        if ($idTrace == 0) return null;
+               
+        // préparation de la requête de recherche
+        $txt_req = "Select *";
+        $txt_req .= " from tracegps_traces";
+        $txt_req .= " where id = $idTrace";
+        $txt_req .= " order by id";
+        
+        $req = $this->cnx->prepare($txt_req);
+        // extraction des données
+        $req->execute();
+        $uneLigne = $req->fetch(PDO::FETCH_OBJ);
+        
+        if($uneLigne)
+        {
+            $unId = utf8_encode($uneLigne->id);
+            $uneDateHeureDebut = utf8_encode($uneLigne->dateDebut);
+            $uneDateHeureFin = utf8_encode($uneLigne->dateFin);
+            $terminee = utf8_encode($uneLigne->terminee);
+            $unIdUtilisateur = utf8_encode($uneLigne->idUtilisateur);
+            
+            $uneTrace = new Trace($unId, $uneDateHeureDebut, $uneDateHeureFin, $terminee, $unIdUtilisateur);
+            
+            $uneTrace->setLesPointsDeTrace(DAO::getLesPointsDeTrace($idTrace));
+            return $uneTrace; 
+        }
+        
+       
+    }
+
+   
 
 
     // --------------------------------------------------------------------------------------
