@@ -25,7 +25,7 @@ $dao = new DAO();
 // la fonction $_GET récupère une donnée passée en paramètre dans l'URL par la méthode GET
 // la fonction $_POST récupère une donnée envoyées par la méthode POST
 // la fonction $_REQUEST récupère par défaut le contenu des variables $_GET, $_POST, $_COOKIE
-if ( empty ($_REQUEST ["pseudo"]) == true) $pseudo = "";  else $pseudo = $_REQUEST ["pseudo"];
+if ( empty ($_REQUEST ["pseudo"]) == true) $prenom = "";  else $prenom = $_REQUEST ["pseudo"];
 if ( empty ($_REQUEST ["adrMail"]) == true)  $adrMail = "";  else $adrMail = $_REQUEST ["adrMail"];
 if ( empty ($_REQUEST ["numTel"]) == true) $numTel = "";  else $numTel = $_REQUEST ["numTel"];
 if ( empty ($_REQUEST ["lang"]) == true) $lang = "";  else $lang = strtolower($_REQUEST ["lang"]);
@@ -33,11 +33,11 @@ if ( empty ($_REQUEST ["lang"]) == true) $lang = "";  else $lang = strtolower($_
 if ($lang != "json") $lang = "xml";
 
 // Contrôle de la présence des paramètres
-if ($pseudo == '' || $adrMail == '' || Outils::estUnNumTelValide($numTel) == false) {
+if ($prenom == '' || $adrMail == '' || Outils::estUnNumTelValide($numTel) == false) {
 	$msg = "Erreur : données incomplètes ou incorrectes.";
 }
 else {
-    if ( strlen($pseudo) < 8 || $dao->existePseudoUtilisateur($pseudo) ) {
+    if ( strlen($prenom) < 8 || $dao->existePseudoUtilisateur($prenom) ) {
 		$msg = "Erreur : pseudo trop court (8 car minimum) ou déjà existant.";
 	}
 	else {
@@ -53,7 +53,7 @@ else {
 			$nbTraces = 0;
 			$dateDerniereTrace = null;
 			// enregistrement de l'utilisateur dans la BDD
-			$unUtilisateur = new Utilisateur(0, $pseudo, $password, $adrMail, $numTel, $niveau, $dateCreation, $nbTraces, $dateDerniereTrace);
+			$unUtilisateur = new Utilisateur(0, $prenom, $password, $adrMail, $numTel, $niveau, $dateCreation, $nbTraces, $dateDerniereTrace);
 			$ok = $dao->creerUnUtilisateur($unUtilisateur);
 			if ( ! $ok ) {
 				$msg = "Erreur : problème lors de l'enregistrement.";
@@ -64,7 +64,7 @@ else {
 			    $sujet = "Création de votre compte dans le système TraceGPS";
 			    $contenuMail = "Vous venez de vous créer un compte utilisateur.\n\n";
 			    $contenuMail .= "Les données enregistrées sont :\n\n";
-			    $contenuMail .= "Votre pseudo : " . $pseudo . "\n";
+			    $contenuMail .= "Votre pseudo : " . $prenom . "\n";
 			    $contenuMail .= "Votre mot de passe : " . $password . " (nous vous conseillons de le changer lors de la première connexion)\n";
 			    $contenuMail .= "Votre numéro de téléphone : " . $unUtilisateur->getNumTel() . "\n";
 			    

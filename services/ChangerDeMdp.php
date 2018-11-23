@@ -26,8 +26,8 @@ $dao = new DAO();
 // la fonction $_GET récupère une donnée passée en paramètre dans l'URL par la méthode GET
 // la fonction $_POST récupère une donnée envoyées par la méthode POST
 // la fonction $_REQUEST récupère par défaut le contenu des variables $_GET, $_POST, $_COOKIE
-if ( empty ($_REQUEST ["pseudo"]) == true) $pseudo = "";  else $pseudo = $_REQUEST ["pseudo"];
-if ( empty ($_REQUEST ["mdpSha1"]) == true)  $mdpSha1 = "";  else $mdpSha1 = $_REQUEST ["mdpSha1"];
+if ( empty ($_REQUEST ["pseudo"]) == true) $prenom = "";  else $prenom = $_REQUEST ["pseudo"];
+if ( empty ($_REQUEST ["mdpSha1"]) == true)  $nom = "";  else $nom = $_REQUEST ["mdpSha1"];
 if ( empty ($_REQUEST ["nouveauMdp"]) == true) $nouveauMdp = "";  else $nouveauMdp = $_REQUEST ["nouveauMdp"];
 if ( empty ($_REQUEST ["confirmationMdp"]) == true) $confirmationMdp = "";  else $confirmationMdp = $_REQUEST ["confirmationMdp"];
 if ( empty ($_REQUEST ["lang"]) == true) $lang = "";  else $lang = strtolower($_REQUEST ["lang"]);
@@ -35,7 +35,7 @@ if ( empty ($_REQUEST ["lang"]) == true) $lang = "";  else $lang = strtolower($_
 if ($lang != "json") $lang = "xml";
 
 // Contrôle de la présence des paramètres
-if ( $pseudo == "" || $mdpSha1 == "" || $nouveauMdp == "" || $confirmationMdp == "" ) {
+if ( $prenom == "" || $nom == "" || $nouveauMdp == "" || $confirmationMdp == "" ) {
     $msg = "Erreur : données incomplètes.";
 }
 else {
@@ -47,18 +47,18 @@ else {
     	    $msg = "Erreur : le nouveau mot de passe et sa confirmation sont différents.";
     	}
     	else {
-    		if ( $dao->getNiveauConnexion($pseudo, $mdpSha1) == 0 ) {
+    		if ( $dao->getNiveauConnexion($prenom, $nom) == 0 ) {
     			$msg = "Erreur : authentification incorrecte.";
     		}
     		else {
     			// enregistre le nouveau mot de passe de l'utilisateur dans la bdd après l'avoir codé en sha1
-    		    $ok = $dao->modifierMdpUtilisateur ($pseudo, $nouveauMdp);
+    		    $ok = $dao->modifierMdpUtilisateur ($prenom, $nouveauMdp);
     		    if ( ! $ok ) {
     		        $msg = "Erreur : problème lors de l'enregistrement du mot de passe.";
     		    }
     		    else {
     		        // envoie un courriel  à l'utilisateur avec son nouveau mot de passe 
-    		        $ok = $dao->envoyerMdp ($pseudo, $nouveauMdp);
+    		        $ok = $dao->envoyerMdp ($prenom, $nouveauMdp);
     		        if ( ! $ok ) {
         			    $msg = "Enregistrement effectué ; l'envoi du courriel  de confirmation a rencontré un problème.";
     		        }
