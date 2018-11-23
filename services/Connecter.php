@@ -24,18 +24,18 @@ $dao = new DAO();
 // la fonction $_GET récupère une donnée passée en paramètre dans l'URL par la méthode GET
 // la fonction $_POST récupère une donnée envoyées par la méthode POST
 // la fonction $_REQUEST récupère par défaut le contenu des variables $_GET, $_POST, $_COOKIE
-if ( empty ($_REQUEST ["pseudo"]) == true)  $pseudo = "";  else   $pseudo = $_REQUEST ["pseudo"];
-if ( empty ($_REQUEST ["mdpSha1"]) == true)  $mdpSha1 = "";  else   $mdpSha1 = $_REQUEST ["mdpSha1"];
+if ( empty ($_REQUEST ["pseudo"]) == true)  $prenom = "";  else   $prenom = $_REQUEST ["pseudo"];
+if ( empty ($_REQUEST ["mdpSha1"]) == true)  $nom = "";  else   $nom = $_REQUEST ["mdpSha1"];
 if ( empty ($_REQUEST ["lang"]) == true) $lang = "";  else $lang = strtolower($_REQUEST ["lang"]);
 // "xml" par défaut si le paramètre lang est absent ou incorrect
 if ($lang != "json") $lang = "xml";
 
 // Contrôle de la présence des paramètres
-if ( $pseudo == "" || $mdpSha1 == "" )
+if ( $prenom == "" || $nom == "" )
 {	$msg = "Erreur : données incomplètes.";
 }
 else
-{	$niveauConnexion = $dao->getNiveauConnexion($pseudo, $mdpSha1);
+{	$niveauConnexion = $dao->getNiveauConnexion($prenom, $nom);
 	
 	if ( $niveauConnexion == 0 ) $msg = "Erreur : authentification incorrecte.";	
 	if ( $niveauConnexion == 1 ) $msg = "Utilisateur authentifié.";

@@ -646,8 +646,13 @@ class DAO
             $unIdUtilisateur = utf8_encode($uneLigne->idUtilisateur);
             
             $uneTrace = new Trace($unId, $uneDateHeureDebut, $uneDateHeureFin, $terminee, $unIdUtilisateur);
-            
-            $uneTrace->setLesPointsDeTrace(DAO::getLesPointsDeTrace($idTrace));
+            $lesPoints = $this->getLesPointsDeTrace($unId);
+            //Pour chaque point de les points, appeller ajouterPoint de trace dans une boucle foreach
+            foreach($lesPoints as $unPoint)
+            {
+                $uneTrace->ajouterPoint($unPoint);
+            }
+
             return $uneTrace; 
         }
         
@@ -689,9 +694,12 @@ class DAO
             
             $uneTrace = new Trace($unId, $uneDateDebut, $uneDateFin, $terminee, $unIdUtilisateur);
             
-            $lesPointsDeTrace = getLesPointsDeTrace($unId);
-            
-            $uneTrace->ajouterPoint($lesPointsDeTrace);
+            $lesPoints = $this->getLesPointsDeTrace($unId);
+            //Pour chaque point de les points, appeller ajouterPoint de trace dans une boucle foreach
+            foreach($lesPoints as $unPoint)
+            {
+                $uneTrace->ajouterPoint($unPoint);
+            }
             
             // ajout de l'utilisateur à la collection
             $lesTraces[] = $uneTrace;
@@ -732,9 +740,12 @@ class DAO
             
             $uneTrace = new Trace($unId, $uneDateDebut, $uneDateFin, $terminee, $unIdUtilisateur);
             
-            $lesPointsDeTrace = getLesPointsDeTrace($unId);
-            
-            $uneTrace->ajouterPoint($lesPointsDeTrace);
+            $lesPoints = $this->getLesPointsDeTrace($unId);
+            //Pour chaque point de les points, appeller ajouterPoint de trace dans une boucle foreach
+            foreach($lesPoints as $unPoint)
+            {
+                $uneTrace->ajouterPoint($unPoint);
+            }
             
             // ajout de l'utilisateur à la collection
             $lesTraces[] = $uneTrace;
@@ -806,7 +817,7 @@ class DAO
     public function terminerUneTrace($uneTrace) {
        
         $dateFin = "";
-        $lesPointsDeTraces = DAO::getLesPointsDeTrace($uneTrace);
+        $lesPointsDeTraces = $this->getLesPointsDeTrace($uneTrace);
         
         if ( sizeof($lesPointsDeTraces) == 0 ) return false;
         
