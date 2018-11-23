@@ -165,20 +165,20 @@ function creerFluxJSON($msg, $uneTrace)
         $lesPointsDuneTrace = $uneTrace->getLesPointsDeTrace();
         
         // construction d'un tableau contenant les utilisateurs
-        $lesObjetsDuTableau = array();
+        $lesObjetsTraces = array();
         foreach ($lesPointsDuneTrace as $unPointsDuneTrace)
         {	// crée une ligne dans le tableau
-            $unObjetUtilisateur = array();
-            $unObjetUtilisateur["id"] = $unPointsDuneTrace->getId();
-            $unObjetUtilisateur["latitude"] = $unPointsDuneTrace->getLatitude();
-            $unObjetUtilisateur["longitude"] = $unPointsDuneTrace->getLongitude();
-            $unObjetUtilisateur["altitude"] = $unPointsDuneTrace->getAltitude();
-            $unObjetUtilisateur["dateHeure"] = $unPointsDuneTrace->getDateHeure();
-            $unObjetUtilisateur["rythmeCardio"] = $unPointsDuneTrace->getRythmeCardio();
+            $unObjetTrace = array();
+            $unObjetTrace["id"] = $unPointsDuneTrace->getId();
+            $unObjetTrace["latitude"] = $unPointsDuneTrace->getLatitude();
+            $unObjetTrace["longitude"] = $unPointsDuneTrace->getLongitude();
+            $unObjetTrace["altitude"] = $unPointsDuneTrace->getAltitude();
+            $unObjetTrace["dateHeure"] = $unPointsDuneTrace->getDateHeure();
+            $unObjetTrace["rythmeCardio"] = $unPointsDuneTrace->getRythmeCardio();
 
-            $lesObjetsDuTableau[] = $unObjetUtilisateur;
+            $lesObjetsTraces[] = $unObjetTrace;
         }
-        $elt_points = ["lesPoints" => $lesObjetsDuTableau];
+        $elt_points = ["lesPoints" => $lesObjetsTraces];
         
         // construction de l'élément "trace"
         $elt_trace = ["trace" => $trace];

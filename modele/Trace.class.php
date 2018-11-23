@@ -241,11 +241,11 @@ class Trace
     
     public function ajouterPoint($unPoint)
     {
-        if (sizeof($this->lesPointsDeTrace) == 0)
+        if ($this->getNombrePoints() == 0)
         {
             $unPoint->setDistanceCumulee(0);
             $unPoint->setTempsCumule(0);
-            $unPoint->setVitesse(0);
+            $unPoint->setVitesse(0);            
         }
         else
         {
