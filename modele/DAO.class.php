@@ -491,7 +491,7 @@ class DAO
     
     public function getLesUtilisateursAutorises($idUtilisateur)
     {
-        $txt_req = "select * from tracegps_autorisations, tracegps_vue_utilisateurs  where tracegps_autorisations.idAutorise = tracegps_vue_utilisateurs.id  and idAutorisant = 2";
+        $txt_req = "select * from tracegps_autorisations, tracegps_vue_utilisateurs  where tracegps_autorisations.idAutorise = tracegps_vue_utilisateurs.id  and idAutorisant = :id";
         
         $req = $this->cnx->prepare($txt_req);
         $req->bindValue("id", $idUtilisateur, PDO::PARAM_INT);
