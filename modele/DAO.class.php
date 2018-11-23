@@ -491,7 +491,7 @@ class DAO
     
     public function getLesUtilisateursAutorises($idUtilisateur)
     {
-        $txt_req = "select * from tracegps_autorisations, tracegps_vue_utilisateurs  where tracegps_autorisations.idAutorise = tracegps_vue_utilisateurs.id  and idAutorisant = 2";
+        $txt_req = "select * from tracegps_autorisations, tracegps_vue_utilisateurs  where tracegps_autorisations.idAutorise = tracegps_vue_utilisateurs.id  and idAutorisant = :id";
         
         $req = $this->cnx->prepare($txt_req);
         $req->bindValue("id", $idUtilisateur, PDO::PARAM_INT);
@@ -646,8 +646,13 @@ class DAO
             $unIdUtilisateur = utf8_encode($uneLigne->idUtilisateur);
             
             $uneTrace = new Trace($unId, $uneDateHeureDebut, $uneDateHeureFin, $terminee, $unIdUtilisateur);
-            
-            $uneTrace->setLesPointsDeTrace(DAO::getLesPointsDeTrace($idTrace));
+            $lesPoints = $this->getLesPointsDeTrace($unId);
+            //Pour chaque point de les points, appeller ajouterPoint de trace dans une boucle foreach
+            foreach($lesPoints as $unPoint)
+            {
+                $uneTrace->ajouterPoint($unPoint);
+            }
+
             return $uneTrace; 
         }
         
