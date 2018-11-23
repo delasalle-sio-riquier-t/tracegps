@@ -779,8 +779,6 @@ class DAO
         $req1->bindValue("idUtilisateur", $uneTrace->getIdUtilisateur(), PDO::PARAM_INT);
         // exécution de la requête
         $ok = $req1->execute();
-        // sortir en cas d'échec
-        if ( ! $ok) { return false; }
         
         // recherche de l'identifiant (auto_increment) qui a été attribué à la trace
         $txt_req2 = "Select max(id) as idMax from tracegps_traces";
@@ -790,7 +788,7 @@ class DAO
         $uneLigne = $req2->fetch(PDO::FETCH_OBJ);
         $unId = $uneLigne->idMax;
         $uneTrace->setId($unId);
-        return true;
+        return $ok;
     }
     
     public function supprimerUneTrace($uneTrace) {
@@ -799,7 +797,7 @@ class DAO
         $txt_req1 .= " where id = :idTrace";
         $req1 = $this->cnx->prepare($txt_req1);
         // liaison de la requête et de ses paramètres
-        $req1->bindValue("idTrace", $uneTrace, PDO::PARAM_INT);
+        $req1->bindValue("idTrace", $uneTrace->getId(), PDO::PARAM_INT);
         // exécution de la requête
         $ok = $req1->execute();
         
@@ -808,9 +806,9 @@ class DAO
         $txt_req2 .= " where idTrace = :idTrace";
         $req2 = $this->cnx->prepare($txt_req2);
         // liaison de la requête et de ses paramètres
-        $req2->bindValue("idTrace", $uneTrace, PDO::PARAM_INT);
+        $req2->bindValue("idTrace", $uneTrace->getId(), PDO::PARAM_INT);
         // exécution de la requête
-        $ok = $req2->execute();
+        $req2->execute();
         return $ok;
     }
     
@@ -836,7 +834,6 @@ class DAO
         
         // exécution de la requête
         $ok = $req1->execute();
-        
         return $ok;
     } 
     
