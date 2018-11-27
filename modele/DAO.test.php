@@ -285,21 +285,21 @@ else {
 // }
 
 
-echo "<h3>Test de terminerUneTrace : </h3>";
-// on choisit une trace non terminée
-$unIdTrace = 3;
-// on l'affiche
-$laTrace = $dao->getUneTrace($unIdTrace);
-echo "<h4>l'objet laTrace avant l'appel de la méthode terminerUneTrace : </h4>";
-echo ($laTrace->toString());
-echo ('<br>');
-// on la termine
-$dao->terminerUneTrace($unIdTrace);
-// et on l'affiche à nouveau
-$laTrace = $dao->getUneTrace($unIdTrace);
-echo "<h4>l'objet laTrace après l'appel de la méthode terminerUneTrace : </h4>";
-echo ($laTrace->toString());
-echo ('<br>');
+// echo "<h3>Test de terminerUneTrace : </h3>";
+// // on choisit une trace non terminée
+// $unIdTrace = 3;
+// // on l'affiche
+// $laTrace = $dao->getUneTrace($unIdTrace);
+// echo "<h4>l'objet laTrace avant l'appel de la méthode terminerUneTrace : </h4>";
+// echo ($laTrace->toString());
+// echo ('<br>');
+// // on la termine
+// $dao->terminerUneTrace($unIdTrace);
+// // et on l'affiche à nouveau
+// $laTrace = $dao->getUneTrace($unIdTrace);
+// echo "<h4>l'objet laTrace après l'appel de la méthode terminerUneTrace : </h4>";
+// echo ($laTrace->toString());
+// echo ('<br>');
 
 
 
@@ -542,8 +542,8 @@ echo ('<br>');
 // --------------------------------------------------------------------------------------
 
 
-// test de la méthode creerUnPointDeTrace ---------------------------------------------------------
-// modifié par Jim le 13/8/2018
+//test de la méthode creerUnPointDeTrace ---------------------------------------------------------
+//modifié par Jim le 13/8/2018
 // echo "<h3>Test de creerUnPointDeTrace : </h3>";
 // // on affiche d'abord le nombre de points (5) de la trace 1
 // $lesPoints = $dao->getLesPointsDeTrace(1);
@@ -551,7 +551,7 @@ echo ('<br>');
 // echo "<p>Nombre de points de la trace 1 : " . $nbPoints . "</p>";
 // // on crée un sixième point et on l'ajoute à la trace 1
 // $unIdTrace = 1;
-// $unID = 6;
+// $unID = 7;
 // $uneLatitude = 48.20;
 // $uneLongitude = -1.55;
 // $uneAltitude = 50;
