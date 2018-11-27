@@ -550,10 +550,11 @@ class DAO
         // préparation de la requête de recherche
         $txt_req = "Select id, latitude, longitude, altitude, dateHeure, rythmeCardio";
         $txt_req .= " from tracegps_Points";
-        $txt_req .= " where idTrace = $idTrace";
+        $txt_req .= " where idTrace = :idTrace";
         $txt_req .= " order by id";
         
         $req = $this->cnx->prepare($txt_req);
+        $req->bindValue("idTrace", $idTrace, PDO::PARAM_INT);
         // extraction des données
         $req->execute();
         $uneLigne = $req->fetch(PDO::FETCH_OBJ);
@@ -629,10 +630,11 @@ class DAO
         // préparation de la requête de recherche
         $txt_req = "Select *";
         $txt_req .= " from tracegps_traces";
-        $txt_req .= " where id = $idTrace";
+        $txt_req .= " where id = :idTrace";
         $txt_req .= " order by id";
         
         $req = $this->cnx->prepare($txt_req);
+        $req->bindValue("idTrace", $idTrace, PDO::PARAM_INT);
         // extraction des données
         $req->execute();
         $uneLigne = $req->fetch(PDO::FETCH_OBJ);
@@ -812,10 +814,10 @@ class DAO
         return $ok;
     }
     
-    public function terminerUneTrace($uneTrace) {
+    public function terminerUneTrace($idTrace) {
        
         $dateFin = "";
-        $lesPointsDeTraces = $this->getLesPointsDeTrace($uneTrace);
+        $lesPointsDeTraces = $this->getLesPointsDeTrace($idTrace);
         
         if ( sizeof($lesPointsDeTraces) == 0 ) return false;
         
@@ -829,7 +831,7 @@ class DAO
         $txt_req1 .= " where id = :idTrace";
         $req1 = $this->cnx->prepare($txt_req1);
         // liaison de la requête et de ses paramètres
-        $req1->bindValue("idTrace", $uneTrace, PDO::PARAM_INT);
+        $req1->bindValue("idTrace", $idTrace, PDO::PARAM_INT);
         $req1->bindValue("dateFin", $dateFin, PDO::PARAM_STR);
         
         // exécution de la requête

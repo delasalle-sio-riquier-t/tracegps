@@ -27,6 +27,8 @@ $dao = new DAO();
 if ( empty ($_REQUEST ["pseudo"]) == true)  $pseudo = "";  else   $pseudo = $_REQUEST ["pseudo"];
 if ( empty ($_REQUEST ["mdpSha1"]) == true)  $mdpSha1 = "";  else   $mdpSha1 = $_REQUEST ["mdpSha1"];
 if ( empty ($_REQUEST ["lang"]) == true) $lang = "";  else $lang = strtolower($_REQUEST ["lang"]);
+if ( empty ($_REQUEST ["idTrace"]) == true) $idTrace = "";  else $idTrace = $_REQUEST ["idTrace"];
+
 // "xml" par défaut si le paramètre lang est absent ou incorrect
 if ($lang != "json") $lang = "xml";
 
@@ -42,11 +44,43 @@ else
     }
     else 
     {
-        $Utilisateur = $dao->getUnUtilisateur($pseudo);
-        $unId = sizeof($dao->getToutesLesTraces())+1;
-        $Trace = new Trace($unId, date("Y-m-d H:i:s"), null, 0,$Utilisateur->getId());
-        $dao->creerUneTrace($Trace);
-        $msg = "Trace créée.";
+        $uneTrace = $dao->getUneTrace($idTrace);
+        if($uneTrace == null)
+        {   $msg = "Erreur : parcours inexistant.";
+        }
+        else 
+        {
+            $idUtilisateur = $dao->getUnUtilisateur($pseudo)->getId();
+            if ($idUtilisateur != $uneTrace->getIdUtilisateur())
+            {
+                $msg="Erreur : le numéro de trace ne correspond pas à cet utilisateur.";
+            }
+            else
+            {
+                if($uneTrace->getTerminee() == true)
+                {
+                    $msg = "Erreur : cette trace est déjà terminée.";
+                }
+                else 
+                {
+                    $ok = $dao->terminerUneTrace($idTrace);
+                    if($ok == false)
+                    {
+                        $msg = "Erreur : problème lors de la fin de l'enregistrement de la trace.";
+                    }
+                    else
+                    {
+                        $msg = "Enregistrement terminé.";
+                    }
+                }
+                
+            }
+        }
+        //$Utilisateur = $dao->getUnUtilisateur($pseudo);
+        //$unId = sizeof($dao->getToutesLesTraces())+1;
+        //$Trace = new Trace($unId, date("Y-m-d H:i:s"), null, 0,$Utilisateur->getId());
+        //$dao->creerUneTrace($Trace);
+        //$msg = "Trace créée.";
     }
     
 }
