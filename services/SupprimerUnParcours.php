@@ -34,7 +34,7 @@ else
         else
         {   $unUtilisateur = $dao->getUnUtilisateur($pseudo);
             $idUtilisateur = $unUtilisateur->getId();
-            $idUserTrace = $uneTrace->getId();
+            $idUserTrace = $uneTrace->getIdUtilisateur();
             
             if ($idUserTrace != $idUtilisateur)
             {	$msg = "Erreur : vous n'êtes pas le propriétaire de ce parcours.";
