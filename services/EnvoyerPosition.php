@@ -105,7 +105,18 @@ exit;
 
 // création du flux XML en sortie
 function creerFluxXML($msg, $valueId)
-{	// crée une instance de DOMdocument (DOM : Document Object Model)
+{	
+    /*
+            <?xml version="1.0" encoding="UTF-8"?>
+            <data>
+              <reponse>Point créé.</reponse>
+              <donnees>
+                  <id>6</id>
+              </donnees>
+            </data>
+    */
+    
+    // crée une instance de DOMdocument (DOM : Document Object Model)
     $doc = new DOMDocument();
     
     // specifie la version et le type d'encodage
@@ -125,12 +136,12 @@ function creerFluxXML($msg, $valueId)
     $elt_reponse = $doc->createElement('reponse', $msg);
     $elt_data->appendChild($elt_reponse);
     
-    $elt_donnees = $doc->createElement('donnees');
-    $elt_data->appendChild($elt_donnees);
+    if ($valueId != 0){
+        $elt_donnees = $doc->createElement('donnees');
+        $elt_data->appendChild($elt_donnees);
     
-    if($valueId != 0){
-    $elt_id = $doc->createElement('id', $valueId);
-    $elt_donnees->appendChild($elt_id);
+        $elt_id = $doc->createElement('id', $valueId);
+        $elt_donnees->appendChild($elt_id);
     }
     // Mise en forme finale
     $doc->formatOutput = true;
@@ -141,21 +152,33 @@ function creerFluxXML($msg, $valueId)
 }
 
 // création du flux JSON en sortie
-function creerFluxJSON($msg)
+function creerFluxJSON($msg, $valueId)
 {
     /* Exemple de code JSON
-     {
-     "data": {
-     "reponse": "Erreur : authentification incorrecte."
-     }
-     }
+        {
+            "data": {
+                "reponse": "Point créé."
+                "donnees": {
+                    "id": 7
+                }
+            }
+        }
+
      */
     
-    // construction de l'élément "data"
-    $elt_data = ["reponse" => $msg];
+    if ($valueId != 0){
+        $elt_id = ["id" => $valueId];
+        $elt_data = ["reponse" => $msg, "donnees" => $elt_id];
+    }
+    else {
+        $elt_data = ["reponse" => $msg];
+    }
     
-    // construction de la racine
+    // constructio n de la racine
     $elt_racine = ["data" => $elt_data];
+    
+    
+    
     
     // retourne le contenu JSON (l'option JSON_PRETTY_PRINT gère les sauts de ligne et l'indentation)
     echo json_encode($elt_racine, JSON_PRETTY_PRINT);

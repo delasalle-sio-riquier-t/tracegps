@@ -34,7 +34,7 @@ if ( empty ($_REQUEST ["lang"]) == true) $lang = "";  else $lang = strtolower($_
 if ($lang != "json") $lang = "xml";
 
 // Contrôle de la présence des paramètres
-if ( $pseudo == "" || $mdpSha1 == "" || $pseudoARetirer == "" || $texteMessage ="")
+if ( $pseudo == "" || $mdpSha1 == "" || $pseudoARetirer == "" || $texteMessage =="")
 {	$msg = "Erreur : données incomplètes.";
 }
 else
