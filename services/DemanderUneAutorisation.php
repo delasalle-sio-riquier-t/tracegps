@@ -38,7 +38,7 @@ if ( empty ($_REQUEST ["lang"]) == true)  $lang = "";  else   $lang = $_REQUEST 
 if ($lang != "json") $lang = "xml";
 // Contrôle de la présence et de la correction des paramètres
 if ( $mdpSha1 == "" || $pseudo == "" || $pseudoDestinataire == "" || $texteMessage == "" || $nomPrenom == "")
-	$msg = "Erreur : données incomplètes";
+	$msg = "Erreur : données incomplètes.";
 else
 {	
     // test de l'authentification de l'utilisateur
@@ -52,7 +52,7 @@ else
         $adrMailDemandeur = $utilisateur->getAdrMail();
     
         if ( $dao->existePseudoUtilisateur($pseudoDestinataire) == false ) 
-            $msg = 'Erreur : pseudo du destinataire inexistant.';
+            $msg = 'Erreur : pseudo utilisateur inexistant.';
  
         else {
             $destinataire = $dao->getUnUtilisateur($pseudoDestinataire);
@@ -60,7 +60,7 @@ else
             $adrMailDestinataire = $destinataire->getAdrMail();
             $lien1 = "http://localhost/ws-php-riquier/tracegps/services/ValiderDemandeAutorisation.php?a=" . $mdpSha1 . "&b=" . $pseudo . "&c=" . $pseudoDestinataire . "&d=1";
             $lien2 = "http://localhost/ws-php-riquier/tracegps/services/ValiderDemandeAutorisation.php?a=" . $mdpSha1 . "&b=" . $pseudo . "&c=" . $pseudoDestinataire . "&d=0";
-            $msg = "Un courriel à été envoyé au destinataire.";
+            $msg = $pseudoDestinataire .  " va recevoir un courriel avec votre demande.";
             
             $sujetMail = "Votre demande d'autorisation à un utilisateur du système TraceGPS";
             $contenuMail = "Cher ou chère " . $pseudoDestinataire . "\n\n";
