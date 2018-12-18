@@ -124,7 +124,7 @@ function creerFluxXML($msg, $valueId)
     $doc->encoding = 'UTF-8';
     
     // crée un commentaire et l'encode en UTF-8
-    $elt_commentaire = $doc->createComment('Service web RetirerUneAutorisation - BTS SIO - Lycée De La Salle - Rennes');
+    $elt_commentaire = $doc->createComment('Service web EnvoyerPosition - BTS SIO - Lycée De La Salle - Rennes');
     // place ce commentaire à la racine du document XML
     $doc->appendChild($elt_commentaire);
     
@@ -174,7 +174,7 @@ function creerFluxJSON($msg, $valueId)
         $elt_data = ["reponse" => $msg];
     }
     
-    // constructio n de la racine
+    // construction de la racine
     $elt_racine = ["data" => $elt_data];
     
     
@@ -185,3 +185,4 @@ function creerFluxJSON($msg, $valueId)
     return;
 }
 ?>
+
